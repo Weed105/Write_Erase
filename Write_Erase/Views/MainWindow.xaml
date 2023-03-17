@@ -1,0 +1,15 @@
+﻿<Window x:Class="Write_Erase.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Write_Erase"
+        mc:Ignorable="d"
+        Title="WEStore" Height="450" Width="800" Icon="/Resources/icon.ico" 
+        DataContext="{Binding mWindowViewModel, Source={StaticResource ViewModelLocator}}"
+        >
+    
+    <Grid>
+        <Frame Content="{Binding PageSource}" NavigationUIVisibility="Hidden" ></Frame>
+    </Grid>
+</Window>
