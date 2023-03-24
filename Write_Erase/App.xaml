@@ -16,6 +16,7 @@
             
             <converter:PriceConverter x:Key="PriceConvert"/>
             <converter:BrushConverter x:Key="BrushConvert"/>
+
             <local:ViewModelLocator x:Key="ViewModelLocator"/>
 
             <Color x:Key="pwsPrimaryColor">#ffffff</Color>

@@ -101,10 +101,21 @@ namespace Write_Erase.ViewModels
 
         public DelegateCommand AddToBasket => new(() =>
         {
-            if (SelectedProduct!= null)
+            if (SelectedProduct != null)
             {
-                ProductsInBasket.Products.Add(SelectedProduct);
                 VisibleButton = Visibility.Visible;
+                ProductCard product = ProductsInBasket.Products.Where(i => i.Product.ProductArticleNumber == SelectedProduct.ProductArticleNumber).FirstOrDefault();
+                if (product != null)
+                {
+                    product.Count += 1;
+                }
+                else
+                {
+                    ProductCard productCard = new ProductCard();
+                    productCard.Product = SelectedProduct;
+                    productCard.Count += 1;
+                    ProductsInBasket.Products.Add(productCard);
+                }
             }
         });
 

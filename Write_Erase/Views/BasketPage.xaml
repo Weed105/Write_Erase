@@ -18,8 +18,8 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <ListView FontFamily="{StaticResource pwsFont}"
+                  SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding Products, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      SelectedItem="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       HorizontalContentAlignment="Stretch"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemsPanel>
@@ -29,7 +29,7 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <materialDesign:Card Background="{Binding ProductDiscountAmount, Converter={StaticResource BrushConvert}}"
+                    <materialDesign:Card    Background="{Binding Path=Product.ProductDiscountAmount,  Converter={StaticResource BrushConvert}}"
                                              Padding="8"
                                              HorizontalAlignment="Stretch">
                         <Grid HorizontalAlignment="Stretch"
@@ -38,11 +38,12 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="3*"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{Binding ProductPhoto}"
+                            <Image Source="{Binding Product.ProductPhoto}"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"
-                                       Width="125"
+                                       Width="80"
                                        Height="125"/>
                             <Grid Grid.Column="1"
                                       VerticalAlignment="Center">
@@ -54,27 +55,48 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0"
                                                FontWeight="Bold"
-                                               Text="{Binding ProductName}"/>
+                                               Text="{Binding Product.ProductName}"/>
                                 <TextBlock Grid.Row="1"
-                                               Text="{Binding ProductDescription}"/>
+                                               Text="{Binding Product.ProductDescription}"/>
                                 <TextBlock Grid.Row="2"
-                                               DataContext="{Binding ProductManufacturerNavigation}"
+                                               DataContext="{Binding Product.ProductManufacturerNavigation}"
                                                Text="{Binding Manufacturer1, StringFormat='Производитель: {0}'}"/>
                                 <TextBlock Grid.Row="3">
 
                                     <TextBlock.Inlines>
                                         <Run Text="Цена: "/>
-                                        <Run Text="{Binding ProductCost, StringFormat='{}{0:C}', ConverterCulture=ru-RU}"
-                                             TextDecorations="{Binding ProductDiscountAmount,Converter={StaticResource PriceConvert}}"/>
-                                        <Run Text="{c:Binding ProductCost - (ProductCost * ProductDiscountAmount / 100), StringFormat='{}{0:C}', ConverterCulture=ru-RU, Mode=OneWay}"/>
+                                        <Run Text="{Binding Product.ProductCost, StringFormat='{}{0:C}', ConverterCulture=ru-RU}"
+                                             TextDecorations="{Binding Product.ProductDiscountAmount,Converter={StaticResource PriceConvert}}"/>
+                                        <Run Text="{c:Binding Product.ProductCost - (Product.ProductCost * Product.ProductDiscountAmount / 100), StringFormat='{}{0:C}', ConverterCulture=ru-RU, Mode=OneWay}"/>
                                     </TextBlock.Inlines>
                                 </TextBlock>
                             </Grid>
                             <TextBlock Grid.Column="2"
-                                           Text="{Binding ProductDiscountAmount, StringFormat='Скидка: {0}'}"
+                                           Text="{Binding Product.ProductDiscountAmount, StringFormat='Скидка: {0}'}"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center">
                             </TextBlock>
+                            <StackPanel Grid.Column="3"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <Button Width="30"
+                                        Height="30"
+                                        Padding="0"
+                                        Content="&#9650;"
+                                        DataContext="{Binding DataContext,  RelativeSource={RelativeSource AncestorType={x:Type local:BasketPage}}}"
+                                        Command="{Binding IncreaseNumber}"
+                                        />
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Width="30"
+                                        Height="30"
+                                        Padding="0"
+                                        Content="&#9660;"
+                                        DataContext="{Binding DataContext,  RelativeSource={RelativeSource AncestorType={x:Type local:BasketPage}}}"
+                                        Command="{Binding ReduceNumber}"
+                                        />
+                            </StackPanel>
                         </Grid>
                     </materialDesign:Card>
                 </DataTemplate>

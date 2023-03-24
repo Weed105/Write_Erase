@@ -15,7 +15,9 @@ namespace Write_Erase.ViewModels
         private readonly PageService _pageService;
         private readonly ProductService _productService;
 
-        public List<Product> Products { get; set; }
+        public ProductCard SelectedItem { get; set; }
+
+        public List<ProductCard> Products { get; set; }
 
         public mBasketViewModel(PageService pageService, ProductService productService)
         {
@@ -23,5 +25,34 @@ namespace Write_Erase.ViewModels
             _productService = productService;
             Products = ProductsInBasket.Products.ToList();
         }
+
+        public DelegateCommand IncreaseNumber => new(() =>
+        {
+            if (SelectedItem != null)
+            {
+                ProductCard selectedProductCard = ProductsInBasket.Products.Where(i => i == SelectedItem).FirstOrDefault();
+                if (selectedProductCard != null && selectedProductCard.Count != selectedProductCard.Product.ProductQuantityInStock)
+                {
+                    selectedProductCard.Count += 1;                    
+                }
+            }
+        });
+
+        public DelegateCommand ReduceNumber => new(() =>
+        {
+            if (SelectedItem != null)
+            {
+                ProductCard selectedProductCard = ProductsInBasket.Products.Where(i => i == SelectedItem).FirstOrDefault();
+                if (selectedProductCard != null)
+                {
+                    selectedProductCard.Count -= 1;                    
+                    if (selectedProductCard.Count == 0)
+                    {
+                        ProductsInBasket.Products.Remove(selectedProductCard);
+                        Products = ProductsInBasket.Products.ToList();
+                    }
+                }
+            }
+        });
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,6 @@ namespace Write_Erase
 {
     static class ProductsInBasket
     {
-        public static List<Product> Products { get; set; } = new List<Product>();
+        public static ObservableCollection<ProductCard> Products { get; set; } = new ObservableCollection<ProductCard>();
     }
 }
