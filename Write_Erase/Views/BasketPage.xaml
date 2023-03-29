@@ -102,5 +102,62 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    Cursor=""
+                    >
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Информация о заказе:"
+                           Grid.Row="0"
+                           FontSize="17"
+                       FontWeight="Bold"
+                       FontFamily="{StaticResource pwsFont}"
+                       Margin="0,10,0,10"
+                       />
+                <TextBlock Text="Сумма без скидок"
+                           Grid.Row="1"
+                           FontSize="15"
+                       FontFamily="{StaticResource pwsFont}"
+                       Margin="0,10,0,10"
+                       />
+                <TextBlock Text="Общая скидка"
+                           Grid.Row="2"
+                           FontSize="15"
+                       Margin="0,10,0,10"
+                       FontFamily="{StaticResource pwsFont}"
+                       />
+                <TextBlock Text="Сумма со скидкой"
+                           Grid.Row="3"
+                           FontSize="15"
+                       Margin="0,10,0,10"
+                       FontFamily="{StaticResource pwsFont}"
+                       />
+                <TextBlock Text="Количество"
+                           Grid.Row="4"
+                           FontSize="15"
+                       Margin="0,10,0,10"
+                       FontFamily="{StaticResource pwsFont}"
+                       />
+                <Button Content="Заказать"
+                           Grid.Row="5"
+                           FontSize="15"
+                    Background="{StaticResource pwsSecondaryBg}"
+                    BorderBrush="{StaticResource pwsSecondaryBg}"
+                    FontFamily="{StaticResource pwsFont}" Cursor="Hand"/>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>
