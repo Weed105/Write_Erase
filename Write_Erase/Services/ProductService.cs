@@ -48,5 +48,24 @@ namespace Write_Erase.Services
             
             return products;
         }
+
+        public async Task<List<PickupPoint>> GetPoints()
+        {
+            List<PickupPoint> points = new();
+            try
+            {
+                var puncts = await _context.PickupPoints.ToListAsync();
+                await Task.Run(() =>
+                {
+                    foreach (var point in puncts)
+                    {
+                        points.Add(point);
+                    }
+                });
+            }
+            catch { }
+
+            return points;
+        }
     }
 }
