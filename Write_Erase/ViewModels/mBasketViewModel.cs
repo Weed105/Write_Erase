@@ -71,19 +71,20 @@ namespace Write_Erase.ViewModels
         public void UpdateSum()
         {
             decimal sum_not_disc = 0;
-            int? discount = 0;
+            decimal? discount = 0;
             decimal? discount_price = 0;
             int count  = 0;
             
             foreach (var product in ProductsInBasket.Products)
             {
                 sum_not_disc += product.Product.ProductCost * product.Count;
-                discount += product.Product.ProductDiscountAmount * product.Count;
                 discount_price += (product.Product.ProductCost - (product.Product.ProductCost * product.Product.ProductDiscountAmount / 100)) * product.Count;
+                discount = (sum_not_disc - discount_price) / (sum_not_disc / 100);
                 count += product.Count;
             }
             sum_not_disc = Math.Round(sum_not_disc, 2);
             discount_price = Math.Round((Decimal)discount_price, 2);
+            discount = Math.Round((Decimal)discount, 2);
 
             NotDiscountPrice = sum_not_disc.ToString();
             Discount = discount.ToString();
@@ -96,7 +97,7 @@ namespace Write_Erase.ViewModels
             var points = await _productService.GetPoints();
             foreach (var point in points)
             {
-                Points.Add(point.Index + " " + point.City + " " + point.Street + " " + point.House);
+                Points.Add(point.Index + ", " + point.City + ", " + point.Street + ", " + point.House);
             }
         }
     }
