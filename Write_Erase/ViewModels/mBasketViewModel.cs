@@ -1,4 +1,5 @@
 ﻿using DevExpress.Mvvm;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Write_Erase.ViewModels
     {
         private readonly PageService _pageService;
         private readonly ProductService _productService;
+        private readonly OrderProductService _orderProductService;
 
         public string NotDiscountPrice { get; set; }
         public string Discount { get; set; }
@@ -26,10 +28,13 @@ namespace Write_Erase.ViewModels
 
         public List<ProductCard> Products { get; set; }
 
-        public mBasketViewModel(PageService pageService, ProductService productService)
+        public string SelectedPoint { get; set; }
+
+        public mBasketViewModel(PageService pageService, ProductService productService, OrderProductService orderProductService)
         {
             _pageService = pageService;
             _productService = productService;
+            _orderProductService = orderProductService;
             Products = ProductsInBasket.Products.ToList();
             PointUpdate();
             UpdateSum();
@@ -51,7 +56,7 @@ namespace Write_Erase.ViewModels
 
         public DelegateCommand ReduceNumber => new(() =>
         {
-            if (SelectedItem != null)
+            if (SelectedPoint != null)
             {
                 ProductCard? selectedProductCard = ProductsInBasket.Products.Where(i => i == SelectedItem).FirstOrDefault();
                 if (selectedProductCard != null)
@@ -67,6 +72,28 @@ namespace Write_Erase.ViewModels
             UpdateSum();
 
         });
+
+        public DelegateCommand OrderCard => new(() =>
+        {
+            if(SelectedPoint != null)
+            {
+                string Connect = "Database=trade;Data Source=localhost;User Id=root;Password=1234";
+                MySqlConnection myConnection = new MySqlConnection(Connect);
+                List<Orderproduct> orders = new();
+                GetOrders(orders);
+
+                myConnection.Open();
+                foreach(ProductCard card in ProductsInBasket.Products)
+                {
+                    MySqlCommand myCommand = new MySqlCommand(String.Format("insert into `orderproduct`(`OrderID`,`ProductArticleNumber`, `Count`) values({0}, {1}, {2})", 11.ToString(), $"'{card.Product.ProductArticleNumber}'", card.Count), myConnection);
+                    MessageBox.Show(myCommand.CommandText);
+                    myCommand.ExecuteNonQuery();
+                }
+                myConnection.Close();
+            }
+        });
+
+
 
         public void UpdateSum()
         {
@@ -99,6 +126,12 @@ namespace Write_Erase.ViewModels
             {
                 Points.Add(point.Index + ", " + point.City + ", " + point.Street + ", " + point.House);
             }
+        }
+
+        public async void GetOrders(List<Orderproduct> orders)
+        {
+            orders = await _orderProductService.GetOrders();
+           
         }
     }
 }

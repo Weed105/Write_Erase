@@ -165,10 +165,12 @@
                           Margin="0,10,0,10"
                           Style="{StaticResource pwsComboBox}"
                           ItemsSource="{Binding Points}"
+                          SelectedItem="{Binding SelectedPoint}"
                           materialDesign:HintAssist.Hint="Выберите пункт выдачи... "
                         />
                     <Button Content="Заказать"
                            FontSize="15"
+                    Command="{Binding OrderCard}"
                     Background="{StaticResource pwsSecondaryBg}"
                     BorderBrush="{StaticResource pwsSecondaryBg}"
                     FontFamily="{StaticResource pwsFont}" Cursor="Hand"/>

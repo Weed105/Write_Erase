@@ -27,6 +27,7 @@ namespace Write_Erase
             services.AddSingleton<PageService>();
             services.AddSingleton<ProductService>();
             services.AddSingleton<UserService>();
+            services.AddSingleton<OrderProductService>();
 
             services.AddDbContext<TradeContext>();
             provider = services.BuildServiceProvider();
