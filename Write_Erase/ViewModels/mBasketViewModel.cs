@@ -1,4 +1,5 @@
 ﻿using DevExpress.Mvvm;
+using DevExpress.Mvvm.Native;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,14 @@ namespace Write_Erase.ViewModels
         public string DiscountPrice { get; set; }
         public string Count { get; set; }
         public List<string> Points { get; set; } = new List<string>();
+        public List<PickupPoint> Points_ID { get; set; } = new List<PickupPoint>();
 
         public ProductCard SelectedItem { get; set; }
 
         public List<ProductCard> Products { get; set; }
+
+        public List<Orderproduct> Orderproducts { get; set; }
+
 
         public string SelectedPoint { get; set; }
 
@@ -75,21 +80,19 @@ namespace Write_Erase.ViewModels
 
         public DelegateCommand OrderCard => new(() =>
         {
-            if(SelectedPoint != null)
+            if (SelectedPoint != null)
             {
                 string Connect = "Database=trade;Data Source=localhost;User Id=root;Password=1234";
                 MySqlConnection myConnection = new MySqlConnection(Connect);
-                List<Orderproduct> orders = new();
-                GetOrders(orders);
-
-                myConnection.Open();
-                foreach(ProductCard card in ProductsInBasket.Products)
+                int id_pickup = 0;
+                foreach(PickupPoint pickupPoint in Points_ID)
                 {
-                    MySqlCommand myCommand = new MySqlCommand(String.Format("insert into `orderproduct`(`OrderID`,`ProductArticleNumber`, `Count`) values({0}, {1}, {2})", 11.ToString(), $"'{card.Product.ProductArticleNumber}'", card.Count), myConnection);
-                    MessageBox.Show(myCommand.CommandText);
-                    myCommand.ExecuteNonQuery();
+                    if (pickupPoint.Index.ToString().Equals( SelectedPoint.Split(", ", StringSplitOptions.RemoveEmptyEntries)[0]))
+                    {
+                        id_pickup = pickupPoint.IdpickupPoint;
+                    }
                 }
-                myConnection.Close();
+                _orderProductService.AddOrder(id_pickup, ProductsInBasket.Products);
             }
         });
 
@@ -125,13 +128,14 @@ namespace Write_Erase.ViewModels
             foreach (var point in points)
             {
                 Points.Add(point.Index + ", " + point.City + ", " + point.Street + ", " + point.House);
+                Points_ID.Add(point);
             }
         }
 
-        public async void GetOrders(List<Orderproduct> orders)
+        public async Task<List<Orderproduct>> GetOrders()
         {
-            orders = await _orderProductService.GetOrders();
-           
+            var orders = await _orderProductService.GetOrders();
+            return orders;
         }
     }
 }
