@@ -91,7 +91,7 @@
                    TargetType="{x:Type Button}" 
                    BasedOn="{StaticResource MaterialDesignFlatAccentBgButton}">
                 <Setter Property="Foreground" Value="White"/>
-                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Background" Value="{StaticResource pwsAccentedBg}"/>
                 <Setter Property="FontFamily" Value="{StaticResource pwsFont}"/>
                 <Setter Property="Margin" Value="0 10 0 0"/>
             </Style>
