@@ -34,5 +34,21 @@ namespace Write_Erase.Services
             }
             return false;
         }
+        public async void RegistrationAsync(string surname, string name, string patronymic, string login, string password)
+        {
+            var users = await _context.Users.ToListAsync();
+            int max_id = users.Max(i => i.UserId) + 1;
+            _context.Users.Add(new User
+            {
+                UserId = max_id,
+                UserName = name,
+                UserSurname = surname,
+                UserLogin = login,
+                UserPassword = password,
+                UserPatronymic = patronymic,
+                UserRole = 2,
+            });
+            _context.SaveChanges();
+        }
     }
 }

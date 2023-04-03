@@ -6,9 +6,10 @@
       xmlns:local="clr-namespace:Write_Erase.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      DataContext="{Binding mRegistrationViewModel,Source={StaticResource ViewModelLocator}}"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       Background="White"
-      Title="RegistrationPage">
+      Title="RegistrationPage" Cursor="">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -25,10 +26,18 @@
                            HorizontalAlignment="Center"
                            FontFamily="{StaticResource pwsFont}"
                            Foreground="Black"/>
-                <TextBox Text="{Binding Surname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox 
                          Style="{StaticResource pwsTextBox}"
                          Margin="0"
-                         materialDesign:HintAssist.Hint="Фамилия"/>
+                         materialDesign:HintAssist.Hint="Фамилия">
+                    <TextBox.Text>
+                        <Binding Path="Surname" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
                 <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Margin="0"
                          Style="{StaticResource pwsTextBox}"
@@ -50,8 +59,10 @@
                          Style="{StaticResource pwsPasswordBox}"
                          materialDesign:HintAssist.Hint="Повторите пароль"/>
                 <Button Style="{StaticResource pwsButton}"
+                        Command="{Binding RegistrationCommand}"
                         Content="Зарегистрироваться"/>
                 <Button Style="{StaticResource pwsButton}"
+                        Command="{Binding BackCommand}"
                         Width="100"
                         Content="Отмена"/>
             </StackPanel>

@@ -56,5 +56,6 @@ namespace Write_Erase.ViewModels
                     return true; return false;
         }); 
         public DelegateCommand SignInLaterCommand => new(() => _pageService.ChangePage(new ViewItems()));
+        public DelegateCommand RegistrationCommand => new(() => _pageService.ChangePage(new RegistrationPage()));
     }
 }

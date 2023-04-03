@@ -132,10 +132,5 @@ namespace Write_Erase.ViewModels
             }
         }
 
-        public async Task<List<Orderproduct>> GetOrders()
-        {
-            var orders = await _orderProductService.GetOrders();
-            return orders;
-        }
     }
 }
