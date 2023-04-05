@@ -19,18 +19,20 @@ namespace Write_Erase.ViewModels
 
         public string Surname
         {
-            get => surname;
+            get => _surname;
             set
             {
-                surname= value;
-                if(surname == null || surname.Equals(""))
+                _surname= value;
+                if (_surname == null || _surname.Equals(""))
                 {
                     errors["Surname"] = "Фамилия не должна быть пустой";
-                    Debug.WriteLine("asd");
+                    Debug.WriteLine(errors["Surname"]);
+
                 }
-                else if (Char.IsLower(surname[0]))
+                else if (Char.IsLower(_surname[0]))
                 {
                     errors["Surname"] = "Фамилия должна начинаться с заглавной буквы";
+                    Debug.WriteLine(errors["Surname"]);
                 }
                 else
                 {
@@ -38,6 +40,7 @@ namespace Write_Erase.ViewModels
                 }
             }
         }
+
         public string Name{ get; set; }
         public string Patronymic{ get; set; }
         public string Login{ get; set; }
@@ -45,10 +48,10 @@ namespace Write_Erase.ViewModels
         public string ReturnPassword{ get; set; }
 
         Dictionary<string, string> errors = new Dictionary<string, string>();
-        private string surname;
+
+        private string _surname;
 
         public string Error => throw new NotImplementedException();
-
         public string this[string columnName] => errors.ContainsKey(columnName) ? errors[columnName] : null;
 
         public bool IsValid => errors.Values.Any(x => x == null);
@@ -61,9 +64,10 @@ namespace Write_Erase.ViewModels
 
         public DelegateCommand RegistrationCommand => new(() =>
         {
-            MessageBox.Show(IsValid.ToString());
-            //_userService.RegistrationAsync(Surname, Name, Patronymic, Login, Password);
-            
+            _userService.RegistrationAsync(Surname, Name, Patronymic, Login, Password);
+            _pageService.ChangePage(new HomePage());
+            MessageBox.Show("Вы успешно зарегистрировались!", "Внимание");
+
         });
 
         public DelegateCommand BackCommand => new(() => _pageService.ChangePage(new HomePage()));

@@ -26,14 +26,13 @@
                            HorizontalAlignment="Center"
                            FontFamily="{StaticResource pwsFont}"
                            Foreground="Black"/>
-                <TextBox 
-                         Style="{StaticResource pwsTextBox}"
+                <TextBox Style="{StaticResource pwsTextBox}"
                          Margin="0"
                          materialDesign:HintAssist.Hint="Фамилия">
                     <TextBox.Text>
-                        <Binding Path="Surname" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="Surname" Mode="TwoWay"  UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
-                                <DataErrorValidationRule/>
+                                <DataErrorValidationRule ValidatesOnTargetUpdated="True" ValidationStep="UpdatedValue"/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>

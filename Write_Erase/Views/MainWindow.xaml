@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="WEStore" Height="450" Width="800" Icon="/Resources/icon.ico" 
         DataContext="{Binding mWindowViewModel, Source={StaticResource ViewModelLocator}}"
+        
         >
     
     <Grid>

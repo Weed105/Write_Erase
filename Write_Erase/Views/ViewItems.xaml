@@ -171,5 +171,18 @@
             <Image Source="\Resources\basket.png"
                    Margin="10, 10, 13, 10" Cursor=""/>
         </Button>
+        <Button Grid.Row="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Background="{StaticResource pwsSecondaryBg}"
+                BorderBrush="{StaticResource pwsSecondaryBg}"
+                Style="{StaticResource MaterialDesignFloatingActionSecondaryButton}"
+                Margin="10, 0, 0, 10"
+                Visibility="{Binding VisibleOrder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Command="{Binding SignInOrders}">
+            <Image Source="\Resources\order.png"
+                   Margin="7"/>
+
+        </Button>
     </Grid>
 </Page>

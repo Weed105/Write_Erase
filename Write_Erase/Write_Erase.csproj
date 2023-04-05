@@ -18,6 +18,7 @@
     <None Remove="Resources\H452A3.png" />
     <None Remove="Resources\icon.ico" />
     <None Remove="Resources\logo.png" />
+    <None Remove="Resources\order.png" />
     <None Remove="Resources\picture.png" />
     <None Remove="Resources\R259E6.jpg" />
     <None Remove="Resources\T564P5.jpg" />
@@ -56,6 +57,7 @@
     <Resource Include="Resources\H452A3.png" />
     <Resource Include="Resources\icon.ico" />
     <Resource Include="Resources\logo.png" />
+    <Resource Include="Resources\order.png" />
     <Resource Include="Resources\picture.png" />
     <Resource Include="Resources\R259E6.jpg" />
     <Resource Include="Resources\T564P5.jpg" />
