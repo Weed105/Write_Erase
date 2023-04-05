@@ -16,7 +16,7 @@ namespace Write_Erase.ViewModels
         private readonly ProductService _productService;
         private readonly OrderProductService _orderProductService;
 
-        public List<Orderproduct> Orders { get; set; }
+        public List<OrderUser> Orders { get; set; }
 
         public mOrderViewModel(PageService pageService, ProductService productService, OrderProductService orderProductService)
         {
@@ -24,16 +24,12 @@ namespace Write_Erase.ViewModels
             _productService = productService;
             _orderProductService = orderProductService;
             Load();
-
-
         }
 
         public async void Load()
-        {
-
-            var orderProducts = await _orderProductService.GetOrders();
+        {           
+            var orderProducts = await _orderProductService.GetOrdersUser();      
             Orders = orderProducts;
-
         }
     }
 }

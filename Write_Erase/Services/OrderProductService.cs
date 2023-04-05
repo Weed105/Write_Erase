@@ -34,6 +34,27 @@ namespace Write_Erase.Services
             catch { }
             return orders;
         }
+
+        public async Task<List<OrderUser>> GetOrdersUser()
+        {
+            List<OrderUser> orderUsers = new();
+
+            try
+            {
+                var orders = await _context.OrderUsers.ToListAsync();
+                await Task.Run(() =>
+                {
+                    foreach (var user in orders)
+                    {
+                        orderUsers.Add(user);
+                    }
+                });
+            }
+            catch { }
+
+            return orderUsers;
+        }
+
         public async void AddOrder(int pickup, ObservableCollection<ProductCard> values)
         {
             var orders = await GetOrders();
@@ -60,5 +81,7 @@ namespace Write_Erase.Services
             }
             _context.SaveChanges();
         }
+
+
     }
 }

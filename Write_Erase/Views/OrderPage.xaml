@@ -77,7 +77,7 @@
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
                                         <TextBlock FontWeight="Bold"
-                                                   Text="{Binding OrderId}"/>
+                                                   Text="{Binding OrderId, StringFormat='Id заказа: {0}'}"/>
                                         <TextBlock Text="{c:Binding ProductArticleNumberNavigation.ProductCost * Count}"/>
                                         <TextBlock Text="asd"/>
                                     </StackPanel>
