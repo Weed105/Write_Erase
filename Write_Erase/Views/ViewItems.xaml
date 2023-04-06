@@ -96,6 +96,17 @@
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="Добавить продукт"
+                                  Visibility="{Binding VisibleMenu}"
+                                  Command="{Binding AddProduct}"
+                                  />
+                        <MenuItem Header="Изменить продукт"
+                                  Visibility="{Binding VisibleMenu}"
+                                  Command="{Binding ChangeProduct}"
+                                  />
+                        <MenuItem Header="Удалить продукт"
+                                  Visibility="{Binding VisibleMenu}"
+                                  />
                         <MenuItem Header="Добавить к заказу"
                                   Command="{Binding AddToBasket}"/>
                     </ContextMenu>

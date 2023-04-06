@@ -22,6 +22,8 @@ namespace Write_Erase.ViewModels
 
         public Product SelectedProduct { get; set; }
         public Visibility VisibleButton { get; set; } = Visibility.Hidden;
+        public Visibility VisibleMenu{ get; set; } = Global.CurrentUser.UserRole == 1 ? Visibility.Visible : Visibility.Collapsed;
+
         public Visibility VisibleOrder { get; set; } = Global.CurrentUser.UserRole == 1 || Global.CurrentUser.UserRole == 3 ? Visibility.Visible : Visibility.Hidden;
 
         public string FullName { get; set; } = Global.CurrentUser == null || Global.CurrentUser.UserName == string.Empty ? "Гость" : $"{Global.CurrentUser.UserSurname} {Global.CurrentUser.UserName} {Global.CurrentUser.UserPatronymic}";
@@ -120,6 +122,22 @@ namespace Write_Erase.ViewModels
                 }
             }
         });
+
+        public DelegateCommand AddProduct => new(() =>
+        {
+            ChangeableProduct.Product = SelectedProduct;
+            ChangeableProduct.AddOrChange = true;
+            _pageService.ChangePage(new ChangePage());
+        });
+        
+        public DelegateCommand ChangeProduct => new(() =>
+        {
+            ChangeableProduct.Product = SelectedProduct;
+            ChangeableProduct.AddOrChange = false;
+            _pageService.ChangePage(new ChangePage());
+        });
+
+
 
         public DelegateCommand SignInBasket=> new(() => _pageService.ChangePage(new BasketPage()));
         public DelegateCommand SignInOrders => new(() => _pageService.ChangePage(new OrderPage()));
