@@ -25,6 +25,7 @@ namespace Write_Erase
             services.AddTransient<mBasketViewModel>();
             services.AddTransient<mRegistrationViewModel>();
             services.AddTransient<mOrderViewModel>();
+            services.AddTransient<mChangeViewModel>();
 
             services.AddSingleton<PageService>();
             services.AddSingleton<ProductService>();
@@ -45,5 +46,6 @@ namespace Write_Erase
         public mBasketViewModel mBasketViewModel => provider.GetRequiredService<mBasketViewModel>();
         public mRegistrationViewModel mRegistrationViewModel => provider.GetRequiredService<mRegistrationViewModel>();
         public mOrderViewModel mOrderViewModel => provider.GetRequiredService<mOrderViewModel>();
+        public mChangeViewModel mChangeViewModel => provider.GetRequiredService<mChangeViewModel>();
     }
 }

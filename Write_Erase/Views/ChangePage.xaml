@@ -8,9 +8,175 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Background="White"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      DataContext="{Binding mChangeViewModel, Source={StaticResource ViewModelLocator}}"
       Title="ChangePage">
-
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock VerticalAlignment="Center"
+                           TextWrapping="Wrap"
+                           FontFamily="{StaticResource pwsFont}"
+                   Text="Добавление продукта"
+                   FontSize="25"
+                   Foreground="{StaticResource pwsAccentedBg}"
+                   HorizontalAlignment="Center"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Image Grid.RowSpan="2" Source="/Resources/picture.png" Margin="5"/>
+            <TextBox Grid.Column="1"
+                     VerticalAlignment="Center"
+                         FontFamily="Comic Sans MS"
+                         VerticalContentAlignment="Bottom"
+                         Style="{StaticResource pwsTextBox}"
+                         Margin="5"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         materialDesign:HintAssist.Hint="Имя"
+                         Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         />
+            <TextBox Grid.Column="2"
+                     VerticalAlignment="Center"
+                         FontFamily="Comic Sans MS"
+                         VerticalContentAlignment="Bottom"
+                         Margin="5"
+                         Style="{StaticResource pwsTextBox}"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         materialDesign:HintAssist.Hint="Артикл"
+                         Text="{Binding Article, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         />
+            <ComboBox Grid.Column="3"
+                     VerticalAlignment="Center"
+                         FontFamily="Comic Sans MS"
+                         ItemsSource="{Binding Measurement}"
+                         SelectedItem="{Binding SelectedMeasurement}"
+                         Style="{StaticResource pwsComboBox}"
+                         Margin="5"
+                         materialDesign:HintAssist.Hint="Ед. изм"
+                         />
+            <TextBox Grid.Column="1"
+                     Grid.Row="1"
+                     VerticalAlignment="Center"
+                         FontFamily="Comic Sans MS"
+                         VerticalContentAlignment="Bottom"
+                         Style="{StaticResource pwsTextBox}"
+                         Margin="5"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         materialDesign:HintAssist.Hint="Описание"
+                         Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         />
+            <TextBox Grid.Column="2"
+                     Grid.Row="1"
+                     VerticalAlignment="Center"
+                         FontFamily="Comic Sans MS"
+                         VerticalContentAlignment="Bottom"
+                         Style="{StaticResource pwsTextBox}"
+                         Margin="5"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         materialDesign:HintAssist.Hint="Количество"
+                         Text="{Binding Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         />
+            <ComboBox Grid.Column="3"
+                     Grid.Row="1"
+                     VerticalAlignment="Center"
+                         FontFamily="Comic Sans MS"
+                         Margin="5"
+                         Style="{StaticResource pwsComboBox}"
+                         ItemsSource="{Binding Category}"                      
+                      SelectedItem="{Binding SelectedCategory}"
+                         materialDesign:HintAssist.Hint="Категория"
+                         Text="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         />
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions> 
+            <ComboBox Grid.Column="0"
+                     Grid.Row="0"
+                     VerticalAlignment="Center"
+                         Margin="5"
+                         FontFamily="Comic Sans MS"
+                         ItemsSource="{Binding Manufacturer}"
+                         SelectedItem="{Binding SelectedManufacturer}"
+                         Style="{StaticResource pwsComboBox}"
+                         materialDesign:HintAssist.Hint="Производитель"
+                         />
+
+            <ComboBox Grid.Column="1"
+                     Grid.Row="0"
+                     VerticalAlignment="Center"
+                         Margin="5"
+                         FontFamily="Comic Sans MS"
+                         ItemsSource="{Binding Supplier}"
+                         SelectedItem="{Binding SelectedSupplier}"
+                         Style="{StaticResource pwsComboBox}"
+                         materialDesign:HintAssist.Hint="Поставщик"
+                         />
+
+            <TextBox Grid.Column="0"
+                     Grid.Row="1"
+                     VerticalAlignment="Center"
+                         FontFamily="Comic Sans MS"
+                         Margin="5"
+                         VerticalContentAlignment="Bottom"
+                         Style="{StaticResource pwsTextBox}"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         materialDesign:HintAssist.Hint="Цена"
+                         Text="{Binding Cost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                         />
+
+            <TextBox Grid.Column="1"
+                     Grid.Row="1"
+                     VerticalAlignment="Center"
+                         FontFamily="Comic Sans MS"
+                         Margin="5"
+                         VerticalContentAlignment="Bottom"
+                         Style="{StaticResource pwsTextBox}"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         materialDesign:HintAssist.Hint="Скидка"
+                         Text="{Binding Discount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                         />
+
+            <TextBox Grid.Column="2"
+                     Grid.Row="1"
+                     VerticalAlignment="Center"
+                         FontFamily="Comic Sans MS"
+                         VerticalContentAlignment="Bottom"
+                         Margin="5"
+                         Style="{StaticResource pwsTextBox}"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         materialDesign:HintAssist.Hint="Макс. скидка"
+                         Text="{Binding MaxDiscount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         />
+        </Grid>
+        <WrapPanel Grid.Row="3" HorizontalAlignment="Center">
+            <Button Style="{StaticResource pwsButton}"
+                    Margin="0, 0, 30, 0"
+                        Command="{Binding GetOut}"
+                        Content="Отмена"/>
+            <Button Style="{StaticResource pwsButton}"
+                    Grid.Column="1"
+                    Margin="30, 0, 0, 0"
+                        Command="{Binding AddProduct}"
+                        Content="Добавить"/>
+        </WrapPanel>
     </Grid>
 </Page>

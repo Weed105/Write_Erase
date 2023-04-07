@@ -67,5 +67,85 @@ namespace Write_Erase.Services
 
             return points;
         }
+
+        public async Task<List<Measurement>> GetMeasurements()
+        {
+            List<Measurement> measurements = new();
+            try
+            {
+                var measurementsDb = await _context.Measurements.ToListAsync();
+                await Task.Run(() =>
+                {
+                    foreach (var measurement in measurementsDb)
+                    {
+                        measurements.Add(measurement);
+                    }
+                });
+            }
+            catch { }
+            return measurements;
+        }
+
+        public async Task<List<Сategory>> GetСategories()
+        {
+            List<Сategory> сategories = new();
+            try
+            {
+                var сategoriesDb = await _context.Сategories.ToListAsync();
+                await Task.Run(() =>
+                {
+                    foreach (var category in сategoriesDb)
+                    {
+                        сategories.Add(category);
+                    }
+                });
+            }
+            catch { }
+            return сategories;
+        }
+
+        public async Task<List<Manufacturer>> GetManufacturers()
+        {
+            List<Manufacturer> manufacturers = new();
+            try
+            {
+                var manufacturersDb = await _context.Manufacturers.ToListAsync();
+                await Task.Run(() =>
+                {
+                    foreach (var manufacturer in manufacturersDb)
+                    {
+                        manufacturers.Add(manufacturer);
+                    }
+                });
+            }
+            catch { }
+            return manufacturers;
+        }
+
+        public async Task<List<Supplier>> GetSuppliers()
+        {
+            List<Supplier> suppliers = new();
+            try
+            {
+                var suppliersDb = await _context.Suppliers.ToListAsync();
+                await Task.Run(() =>
+                {
+                    foreach (var supplier in suppliersDb)
+                    {
+                        suppliers.Add(supplier);
+                    }
+                });
+            }
+            catch { }
+            return suppliers;
+        }
+        
+        public async void AddProduct(Product product)
+        {
+            var products = _context.Products.ToListAsync();
+            var getProducts = await GetProducts();
+            _context.Products.Add(product);
+            _context.SaveChanges();
+        }
     }
 }
