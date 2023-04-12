@@ -20,7 +20,7 @@
         <TextBlock VerticalAlignment="Center"
                            TextWrapping="Wrap"
                            FontFamily="{StaticResource pwsFont}"
-                   Text="Добавление продукта"
+                   Text="{Binding Title}"
                    FontSize="25"
                    Foreground="{StaticResource pwsAccentedBg}"
                    HorizontalAlignment="Center"/>
@@ -35,7 +35,15 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Image Grid.RowSpan="2" Source="/Resources/picture.png" Margin="5"/>
+            <Image Grid.RowSpan="2" Source="/Resources/picture.png" Margin="30"/>
+            <Button 
+                Grid.RowSpan="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Style="{StaticResource pwsButton}"
+                    Command="{Binding ChangeImage}"
+                    Content="Выбрать изображение"
+                   />
             <TextBox Grid.Column="1"
                      VerticalAlignment="Center"
                          FontFamily="Comic Sans MS"
@@ -59,8 +67,8 @@
             <ComboBox Grid.Column="3"
                      VerticalAlignment="Center"
                          FontFamily="Comic Sans MS"
-                         ItemsSource="{Binding Measurement}"
-                         SelectedItem="{Binding SelectedMeasurement}"
+                         ItemsSource="{Binding Measurement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         SelectedItem="{Binding SelectedMeasurement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource pwsComboBox}"
                          Margin="5"
                          materialDesign:HintAssist.Hint="Ед. изм"
@@ -93,7 +101,7 @@
                          FontFamily="Comic Sans MS"
                          Margin="5"
                          Style="{StaticResource pwsComboBox}"
-                         ItemsSource="{Binding Category}"                      
+                         ItemsSource="{Binding Categories}"                      
                       SelectedItem="{Binding SelectedCategory}"
                          materialDesign:HintAssist.Hint="Категория"
                          Text="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -176,7 +184,7 @@
                     Grid.Column="1"
                     Margin="30, 0, 0, 0"
                         Command="{Binding AddProduct}"
-                        Content="Добавить"/>
+                        Content="{Binding TextButton}"/>
         </WrapPanel>
     </Grid>
 </Page>

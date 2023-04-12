@@ -173,7 +173,6 @@ public partial class TradeContext : DbContext
             entity.Property(e => e.ProductDescription).HasColumnType("text");
             entity.Property(e => e.ProductName).HasColumnType("text");
             entity.Property(e => e.ProductPhoto).HasColumnType("text");
-            entity.Property(e => e.ProductStatus).HasColumnType("text");
 
             entity.HasOne(d => d.ProductCategoryNavigation).WithMany(p => p.Products)
                 .HasForeignKey(d => d.ProductCategory)

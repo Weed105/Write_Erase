@@ -23,8 +23,6 @@ public partial class Product
 
     public int ProductQuantityInStock { get; set; }
 
-    public string ProductStatus { get; set; } = null!;
-
     public int ProducMaxDiscount { get; set; }
 
     public int ProductMeasurement { get; set; }

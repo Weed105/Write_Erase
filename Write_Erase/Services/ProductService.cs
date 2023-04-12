@@ -35,7 +35,14 @@ namespace Write_Erase.Services
                             ProductName = item.ProductName,
                             ProductDescription= item.ProductDescription,
                             ProductManufacturer= item.ProductManufacturer,
+                            ProducMaxDiscount = item.ProducMaxDiscount,
+                            ProductCategory= item.ProductCategory,
+                            ProductMeasurement= item.ProductMeasurement,
+                            ProductSupplier = item.ProductSupplier,
                             ProductManufacturerNavigation = item.ProductManufacturerNavigation,
+                            ProductCategoryNavigation = item.ProductCategoryNavigation,
+                            ProductMeasurementNavigation= item.ProductMeasurementNavigation,
+                            ProductSupplierNavigation= item.ProductSupplierNavigation,
                             ProductCost = item.ProductCost,
                             ProductDiscountAmount= item.ProductDiscountAmount.Value,
                             ProductArticleNumber= item.ProductArticleNumber,
@@ -142,8 +149,8 @@ namespace Write_Erase.Services
         
         public async void AddProduct(Product product)
         {
-            var products = _context.Products.ToListAsync();
-            var getProducts = await GetProducts();
+            //var products = _context.Products.ToListAsync();
+            //var getProducts = await GetProducts();
             _context.Products.Add(product);
             _context.SaveChanges();
         }
