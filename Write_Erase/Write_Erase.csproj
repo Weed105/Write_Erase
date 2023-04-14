@@ -23,6 +23,58 @@
     <None Remove="Resources\R259E6.jpg" />
     <None Remove="Resources\T564P5.jpg" />
     <None Remove="Resources\А112Т4.jpg" />
+    <None Remove="Resources\Снимок.PNG" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\A346R4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\A543T6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\B730E2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\basket.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\D419T7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\F719R5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\G278R6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\H452A3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\order.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\picture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\R259E6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\T564P5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\А112Т4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Снимок.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -47,21 +99,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\A346R4.jpg" />
-    <Resource Include="Resources\A543T6.jpg" />
-    <Resource Include="Resources\B730E2.jpg" />
-    <Resource Include="Resources\basket.png" />
-    <Resource Include="Resources\D419T7.png" />
-    <Resource Include="Resources\F719R5.jpg" />
-    <Resource Include="Resources\G278R6.png" />
-    <Resource Include="Resources\H452A3.png" />
-    <Resource Include="Resources\icon.ico" />
-    <Resource Include="Resources\logo.png" />
-    <Resource Include="Resources\order.png" />
-    <Resource Include="Resources\picture.png" />
-    <Resource Include="Resources\R259E6.jpg" />
-    <Resource Include="Resources\T564P5.jpg" />
-    <Resource Include="Resources\А112Т4.jpg" />
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

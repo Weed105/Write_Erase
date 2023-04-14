@@ -1,12 +1,15 @@
 ﻿using DevExpress.Mvvm;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using Write_Erase.Models;
 using Write_Erase.Services;
 using Write_Erase.Views;
@@ -16,8 +19,6 @@ namespace Write_Erase.ViewModels
     public class mChangeViewModel : BindableBase, IDataErrorInfo
     {
         Dictionary<string, string> errors = new Dictionary<string, string>();
-        private string _name;
-        private string _article;
 
         public string Error => throw new NotImplementedException();
         public string this[string columnName] => errors.ContainsKey(columnName) ? errors[columnName] : null;
@@ -36,7 +37,7 @@ namespace Write_Erase.ViewModels
         public string Cost { get; set; }
         public string Discount { get; set; }
         public string MaxDiscount { get; set; }
-        public string Image { get; set; }
+        public string Image { get; set; } = "../../../Resources/picture.png";
 
         public string SelectedMeasurement { get; set; }
         public string SelectedCategory { get; set; }
@@ -65,7 +66,12 @@ namespace Write_Erase.ViewModels
 
         public DelegateCommand AddProduct => new(() =>
         {
-            Article = Products.Where(i => i.ProductArticleNumber.Equals(Article)).SingleOrDefault().ProductArticleNumber;
+            string[] images = Directory.GetFiles("../../../Resources/");
+            if (!images.Contains("../../../Resources/" + Path.GetFileName(Image)))
+            {
+                File.Copy(Image, "../../../Resources/" + Path.GetFileName(Image));
+            }
+            Random random= new Random();
 
             if (SelectedSupplier != null && SelectedMeasurement != null && SelectedCategory != null && SelectedManufacturer != null)
             {
@@ -78,17 +84,30 @@ namespace Write_Erase.ViewModels
                     ProductCost = Convert.ToDecimal(Cost),
                     ProductDiscountAmount = Convert.ToInt32(Discount),
                     ProducMaxDiscount = Convert.ToInt32(MaxDiscount),
-                    //ProductPhoto = "picture.png",
+                    ProductPhoto = Path.GetFileName(Image),
                     ProductMeasurement = MeasurementDb.Where(i => i.Measurement1.Equals(SelectedMeasurement)).SingleOrDefault().Idmeasurements,
                     ProductCategory = CategoriesDb.Where(i => i.СategoryProduct.Equals(SelectedCategory)).SingleOrDefault().Idсategories,
                     ProductManufacturer = ManufacturerDb.Where(i => i.Manufacturer1.Equals(SelectedManufacturer)).SingleOrDefault().Idmanufacturers,
                     ProductSupplier = SupplierDb.Where(i => i.Supplier1.Equals(SelectedSupplier)).SingleOrDefault().Idsuppliers,
                 };
-                _productService.AddProduct(product);
+                if (ChangeableProduct.AddOrChange)
+                    _productService.AddProduct(product);
+                else
+                    _productService.ChangeProduct(product);
             }
         });
 
         public DelegateCommand GetOut => new(() => _pageService.ChangePage(new ViewItems()));
+
+        public DelegateCommand ChangeImage => new(() =>
+        {
+            OpenFileDialog openFileDialog= new OpenFileDialog();
+            openFileDialog.Filter = "Image files (*.png;*.jpeg)|*.png;*.jpeg|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Image = Path.GetFullPath(openFileDialog.FileName);
+            }
+        });
 
         public async void LoadData()
         {
@@ -128,13 +147,13 @@ namespace Write_Erase.ViewModels
                 Description = ChangeableProduct.Product.ProductDescription;
                 Count = ChangeableProduct.Product.ProductQuantityInStock.ToString();
                 Cost = ChangeableProduct.Product.ProductCost.ToString();
+                Image = ChangeableProduct.Product.ProductPhoto.ToString();
                 Discount = ChangeableProduct.Product.ProductDiscountAmount.ToString();
                 MaxDiscount = ChangeableProduct.Product.ProducMaxDiscount.ToString();
                 SelectedMeasurement = MeasurementDb.Where(i => i.Idmeasurements == ChangeableProduct.Product.ProductMeasurement).SingleOrDefault().Measurement1;
                 SelectedCategory = CategoriesDb.Where(i => i.Idсategories == ChangeableProduct.Product.ProductCategory).SingleOrDefault().СategoryProduct;
                 SelectedManufacturer = ManufacturerDb.Where(i => i.Idmanufacturers == ChangeableProduct.Product.ProductManufacturer).SingleOrDefault().Manufacturer1;
                 SelectedSupplier = SupplierDb.Where(i => i.Idsuppliers == ChangeableProduct.Product.ProductSupplier).SingleOrDefault().Supplier1;
-
             }
         }
 

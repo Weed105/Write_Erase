@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using Microsoft.Win32;
+using System.IO;
 using Write_Erase.Models;
 using Write_Erase.Services;
 using Write_Erase.Views;

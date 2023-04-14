@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DevExpress.Mvvm.Native;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -149,9 +150,23 @@ namespace Write_Erase.Services
         
         public async void AddProduct(Product product)
         {
-            //var products = _context.Products.ToListAsync();
-            //var getProducts = await GetProducts();
             _context.Products.Add(product);
+            _context.SaveChanges();
+        }
+        public async void ChangeProduct(Product product)
+        {
+            Product product1 = _context.Products.Where(i => i.ProductArticleNumber == product.ProductArticleNumber).SingleOrDefault();
+            product1.ProducMaxDiscount = product.ProducMaxDiscount;
+            product1.ProductManufacturer = product.ProductManufacturer;
+            product1.ProductCategory = product.ProductCategory;
+            product1.ProductDescription = product.ProductDescription;
+            product1.ProductPhoto = product.ProductPhoto;
+            product1.ProductName = product.ProductName;
+            product1.ProductMeasurement = product.ProductMeasurement;
+            product1.ProductSupplier = product.ProductSupplier;
+            product1.ProductCost = product.ProductCost;
+            product1.ProductQuantityInStock = product.ProductQuantityInStock;
+            product1.ProductDiscountAmount = product.ProductDiscountAmount;
             _context.SaveChanges();
         }
     }
