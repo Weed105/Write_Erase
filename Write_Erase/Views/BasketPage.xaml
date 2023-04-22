@@ -13,114 +13,140 @@
       Title="BasketPage" Cursor="">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2.5*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <ListView FontFamily="{StaticResource pwsFont}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Menu Margin="5"
+                      Grid.Column="4"
+                      HorizontalAlignment="Right">
+            <MenuItem FontFamily="{StaticResource pwsFont}">
+                <MenuItem.Header>
+                    <Image Source="/Resources/logo.png"/>
+                </MenuItem.Header>
+                <MenuItem Foreground="White"
+                                  Header="{Binding FullName}"
+                                  IsEnabled="False"
+                                  Opacity="1"/>
+                <Separator Style="{StaticResource MaterialDesignLightSeparator}"
+                                   Margin="10 0 10 0"/>
+                <MenuItem Header="Выйти"
+                                  Command="{Binding SignOutCommand}"
+                                  FontSize="14"/>
+            </MenuItem>
+            <Menu.Resources>
+                <SolidColorBrush x:Key="MaterialDesignPaper" Color="{StaticResource pwsAccentedColor}"/>
+            </Menu.Resources>
+        </Menu>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2.5*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ListView FontFamily="{StaticResource pwsFont}"
                   SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding Products, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       HorizontalContentAlignment="Stretch"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="IsSelected" Value="True"/>
-                        </Trigger>
-                    </Style.Triggers>
-                    <Setter Property="BorderBrush" Value="Gray"/>
-                    <Setter Property="BorderThickness" Value="1"/>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="IsSelected" Value="True"/>
+                            </Trigger>
+                        </Style.Triggers>
+                        <Setter Property="BorderBrush" Value="Gray"/>
+                        <Setter Property="BorderThickness" Value="1"/>
 
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical"/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <materialDesign:Card    Background="{Binding Path=Product.ProductDiscountAmount,  Converter={StaticResource BrushConvert}}"
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card    Background="{Binding Path=Product.ProductDiscountAmount,  Converter={StaticResource BrushConvert}}"
                                              Padding="8"
                                              HorizontalAlignment="Stretch">
-                        <Grid HorizontalAlignment="Stretch"
+                            <Grid HorizontalAlignment="Stretch"
                                   VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Image Source="{Binding Product.ProductPhoto}"
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding Product.ProductPhoto}"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"
                                        Width="80"
                                        Height="125"/>
-                            <Grid Grid.Column="1"
+                                <Grid Grid.Column="1"
                                       VerticalAlignment="Center">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0"
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0"
                                                FontWeight="Bold"
                                                Text="{Binding Product.ProductName}"/>
-                                <TextBlock Grid.Row="1"
+                                    <TextBlock Grid.Row="1"
                                                Text="{Binding Product.ProductDescription}"/>
-                                <TextBlock Grid.Row="2"
+                                    <TextBlock Grid.Row="2"
                                                DataContext="{Binding Product.ProductManufacturerNavigation}"
                                                Text="{Binding Manufacturer1, StringFormat='Производитель: {0}'}"/>
-                                <TextBlock Grid.Row="3">
+                                    <TextBlock Grid.Row="3">
 
-                                    <TextBlock.Inlines>
-                                        <Run Text="Цена: "/>
-                                        <Run Text="{Binding Product.ProductCost, StringFormat='{}{0:C}', ConverterCulture=ru-RU}"
+                                        <TextBlock.Inlines>
+                                            <Run Text="Цена: "/>
+                                            <Run Text="{Binding Product.ProductCost, StringFormat='{}{0:C}', ConverterCulture=ru-RU}"
                                              TextDecorations="{Binding Product.ProductDiscountAmount,Converter={StaticResource PriceConvert}}"/>
-                                        <Run Text="{c:Binding Product.ProductCost - (Product.ProductCost * Product.ProductDiscountAmount / 100), StringFormat='{}{0:C}', ConverterCulture=ru-RU, Mode=OneWay}"/>
-                                    </TextBlock.Inlines>
-                                </TextBlock>
-                            </Grid>
-                            <TextBlock Grid.Column="2"
+                                            <Run Text="{c:Binding Product.ProductCost - (Product.ProductCost * Product.ProductDiscountAmount / 100), StringFormat='{}{0:C}', ConverterCulture=ru-RU, Mode=OneWay}"/>
+                                        </TextBlock.Inlines>
+                                    </TextBlock>
+                                </Grid>
+                                <TextBlock Grid.Column="2"
                                            Text="{Binding Product.ProductDiscountAmount, StringFormat='Скидка: {0}%'}"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center">
-                            </TextBlock>
-                            <StackPanel Grid.Column="3"
+                                </TextBlock>
+                                <StackPanel Grid.Column="3"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
-                                <Button Width="30"
+                                    <Button Width="30"
                                         Height="30"
                                         Padding="0"
                                         Content="&#9650;"
                                         DataContext="{Binding DataContext,  RelativeSource={RelativeSource AncestorType={x:Type local:BasketPage}}}"
                                         Command="{Binding IncreaseNumber}"
                                         />
-                                <TextBlock HorizontalAlignment="Center"
+                                    <TextBlock HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
                                            Text="{Binding Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                <Button Width="30"
+                                    <Button Width="30"
                                         Height="30"
                                         Padding="0"
                                         Content="&#9660;"
                                         DataContext="{Binding DataContext,  RelativeSource={RelativeSource AncestorType={x:Type local:BasketPage}}}"
                                         Command="{Binding ReduceNumber}"
                                         />
-                            </StackPanel>
-                        </Grid>
-                    </materialDesign:Card>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <Grid Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <Border Grid.Column="1"
+                                </StackPanel>
+                            </Grid>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="1"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     BorderBrush="{StaticResource pwsSecondaryBg}"
@@ -128,54 +154,67 @@
                     CornerRadius="30"
                     Padding="10"
                     >
-                <StackPanel 
+                    <StackPanel 
                     Cursor="">
-                    <TextBlock Text="Информация о заказе:"
+                        <TextBlock Text="Информация о заказе:"
                            FontSize="17"
                        FontWeight="Bold"
                        FontFamily="{StaticResource pwsFont}"
                        Margin="0,10,0,10"
                        />
-                    <TextBlock 
+                        <TextBlock 
                            Text="{Binding NotDiscountPrice, StringFormat='Сумма без скидок: {0}', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            FontSize="15"
                        FontFamily="{StaticResource pwsFont}"
                        Margin="0,10,0,10"
                        />
-                    <TextBlock 
+                        <TextBlock 
                            Text="{Binding Discount, StringFormat='Общая скидка: {0}%', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            FontSize="15"
                        Margin="0,10,0,10"
                        FontFamily="{StaticResource pwsFont}"
                        />
-                    <TextBlock 
+                        <TextBlock 
                            Text="{Binding DiscountPrice, StringFormat='Сумма со скидкой: {0}', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            FontSize="15"
                        Margin="0,10,0,10"
                        FontFamily="{StaticResource pwsFont}"
                        />
-                    <TextBlock
+                        <TextBlock
                            Text="{Binding Count, StringFormat='Количество: {0}', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                
                            FontSize="15"
                        Margin="0,10,0,10"
                        FontFamily="{StaticResource pwsFont}"
                        />
-                    <ComboBox
+                        <ComboBox
                           Margin="0,10,0,10"
                           Style="{StaticResource pwsComboBox}"
                           ItemsSource="{Binding Points}"
                           SelectedItem="{Binding SelectedPoint}"
                           materialDesign:HintAssist.Hint="Выберите пункт выдачи... "
                         />
-                    <Button Content="Заказать"
+                        <Button Content="Заказать"
                            FontSize="15"
                     Command="{Binding OrderCard}"
                     Background="{StaticResource pwsSecondaryBg}"
                     BorderBrush="{StaticResource pwsSecondaryBg}"
                     FontFamily="{StaticResource pwsFont}" Cursor="Hand"/>
-                </StackPanel>
-            </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
         </Grid>
+        <Button Grid.Row="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Background="{StaticResource pwsSecondaryBg}"
+                BorderBrush="{StaticResource pwsSecondaryBg}"
+                Style="{StaticResource MaterialDesignFloatingActionSecondaryButton}"
+                Margin="10, 0, 0, 10"
+                Command="{Binding SignInProducts}">
+            <Image Source="\Resources\products.png"
+                   Margin="7"/>
+
+        </Button>
     </Grid>
 </Page>

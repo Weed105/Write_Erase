@@ -71,13 +71,21 @@ namespace Write_Erase.ViewModels
             {
                 File.Copy(Image, "../../../Resources/" + Path.GetFileName(Image));
             }
-            Random random= new Random();
 
-            if (SelectedSupplier != null && SelectedMeasurement != null && SelectedCategory != null && SelectedManufacturer != null)
+            Random random= new Random();
+            string randomArticle = "";
+            for (int i = 0; i < 6; i++)
+            {
+                if (i == 0 || i == 4)
+                    randomArticle += (char)random.Next(65, 90);
+                else
+                    randomArticle += (char)random.Next(48, 57);
+            }
+            if (!Name.Equals("") && !Description.Equals("") && SelectedSupplier != null && SelectedMeasurement != null && SelectedCategory != null && SelectedManufacturer != null && Products.Where(i => i.ProductArticleNumber.Equals(randomArticle)).Count() == 0)
             {
                 Product product = new Product
                 {
-                    ProductArticleNumber = Article,
+                    ProductArticleNumber = ChangeableProduct.AddOrChange ? randomArticle : Article,
                     ProductName = Name,
                     ProductDescription = Description,
                     ProductQuantityInStock = Convert.ToInt32(Count),
@@ -140,7 +148,7 @@ namespace Write_Erase.ViewModels
             }
 
 
-            if (!ChangeableProduct.AddOrChange && MeasurementDb.Count != 0)
+            if (ChangeableProduct.Product.ProductPhoto != null && !ChangeableProduct.AddOrChange && MeasurementDb.Count != 0)
             {
                 Article = ChangeableProduct.Product.ProductArticleNumber;
                 Name = ChangeableProduct.Product.ProductName;

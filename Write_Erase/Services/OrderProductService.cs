@@ -42,6 +42,8 @@ namespace Write_Erase.Services
             try
             {
                 var orders = await _context.OrderUsers.ToListAsync();
+                await _context.OrderStatuses.ToListAsync();
+                await _context.Orderproducts.ToListAsync();
                 await Task.Run(() =>
                 {
                     foreach (var user in orders)
@@ -82,6 +84,19 @@ namespace Write_Erase.Services
             _context.SaveChanges();
         }
 
+        public async void ChangeOrder(OrderUser orderUser)
+        {
+            OrderUser orderUser1 = _context.OrderUsers.FirstOrDefault(i => i.OrderId == orderUser.OrderId);
+            orderUser1.OrderDeliveryDate = orderUser.OrderDeliveryDate;
+            _context.SaveChanges();
+        }
+
+        public async void ChangeState(OrderUser orderUser)
+        {
+            OrderUser orderUser1 = _context.OrderUsers.FirstOrDefault(i => i.OrderId == orderUser.OrderId);
+            orderUser1.OrderStatus = orderUser.OrderStatus;
+            _context.SaveChanges();
+        }
 
     }
 }

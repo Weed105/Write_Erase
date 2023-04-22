@@ -106,6 +106,7 @@
                                   />
                         <MenuItem Header="Удалить продукт"
                                   Visibility="{Binding VisibleMenu}"
+                                  Command="{Binding DeleteProduct}"
                                   />
                         <MenuItem Header="Добавить к заказу"
                                   Command="{Binding AddToBasket}"/>
@@ -154,7 +155,7 @@
                                             <Run Text="Цена: "/>
                                             <Run Text="{Binding ProductCost, StringFormat='{}{0:C}', ConverterCulture=ru-RU}"
                                              TextDecorations="{Binding ProductDiscountAmount,Converter={StaticResource PriceConvert}}"/>
-                                            <Run Text="{c:Binding ProductCost - (ProductCost * ProductDiscountAmount / 100), StringFormat='{}{0:C}', ConverterCulture=ru-RU, Mode=OneWay}"/>
+                                            <Run Text="{Binding ProductArticleNumber, Converter={StaticResource PriceConvert}, StringFormat='{}{0:C}', ConverterCulture=ru-RU}"/>
                                         </TextBlock.Inlines>
                                     </TextBlock>
                                 </Grid>

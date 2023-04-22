@@ -7,6 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Background="White"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       DataContext="{Binding mOrderViewModel, Source={StaticResource ViewModelLocator}}"
@@ -21,8 +22,9 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="1"
                            VerticalAlignment="Bottom"
@@ -53,21 +55,73 @@
                           ItemsSource="{Binding Filters}"
                           SelectedItem="{Binding Filter}"
                           materialDesign:HintAssist.Hint="Фильтрация... "/>
+                <Menu Margin="5"
+                      Grid.Column="4"
+                      HorizontalAlignment="Right">
+                    <MenuItem FontFamily="{StaticResource pwsFont}">
+                        <MenuItem.Header>
+                            <Image Source="/Resources/logo.png"/>
+                        </MenuItem.Header>
+                        <MenuItem Foreground="White"
+                                  Header="{Binding FullName}"
+                                  IsEnabled="False"
+                                  Opacity="1"/>
+                        <Separator Style="{StaticResource MaterialDesignLightSeparator}"
+                                   Margin="10 0 10 0"/>
+                        <MenuItem Header="Выйти"
+                                  Command="{Binding SignOutCommand}"
+                                  FontSize="14"/>
+                    </MenuItem>
+                    <Menu.Resources>
+                        <SolidColorBrush x:Key="MaterialDesignPaper" Color="{StaticResource pwsAccentedColor}"/>
+                    </Menu.Resources>
+                </Menu>
             </Grid>
-            <Grid Grid.Row="1">
-                <ListView FontFamily="{StaticResource pwsFont}"
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="{Binding ListWidth}"/>
+            </Grid.ColumnDefinitions>
+            <ListView FontFamily="{StaticResource pwsFont}"
+                      SelectedItem="{Binding SelectedOrder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           ItemsSource="{Binding Orders, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           HorizontalContentAlignment="Stretch"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           >
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <materialDesign:Card HorizontalAlignment="Stretch">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Изменить статус"
+                                  Command="{Binding ChangeStatus}"
+                                  />
+                    </ContextMenu>
+                </ListView.ContextMenu>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="IsSelected" Value="True"/>
+                            </Trigger>
+                        </Style.Triggers>
+                        <Setter Property="BorderBrush" Value="Gray"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="3"
+                                CornerRadius="6"
+                                BorderBrush="{StaticResource pwsAccentedBg}">
+                            <materialDesign:Card 
+                            Padding="10"
+                                Background="{Binding OrderId, Converter={StaticResource OrderBrushConvert}}"
+                            HorizontalAlignment="Stretch">
                                 <Grid HorizontalAlignment="Stretch"
                                       VerticalAlignment="Center">
                                     <Grid.ColumnDefinitions>
@@ -76,22 +130,143 @@
                                         <ColumnDefinition Width="3*"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
-                                        <TextBlock FontWeight="Bold"
-                                                   Text="{Binding OrderId, StringFormat='Id заказа: {0}'}"/>
-                                        <TextBlock Text="{c:Binding ProductArticleNumberNavigation.ProductCost * Count}"/>
-                                        <TextBlock Text="asd"/>
+                                        <TextBlock FontWeight="Bold" Text="{Binding OrderId, StringFormat='Id заказа: {0}'}"/>
+                                        <TextBlock Text="{Binding OrderId, StringFormat='Цена без скидки: {0:C}', ConverterCulture=ru-RU, Converter={StaticResource OrderConvert}}"/>
+                                        <TextBlock Text="{Binding OrderId, StringFormat='Цена со скидки: {0:C}', ConverterCulture=ru-RU, Converter={StaticResource OrderPriceConvert}}"/>
+                                        <TextBlock Text="{Binding OrderId, StringFormat='Общий размер скидки: {0}%', Converter={StaticResource OrderDiscountConvert}}"/>
                                     </StackPanel>
-                                    <StackPanel Grid.Column="1">
-                                        <TextBlock Text="{Binding Order.OrderDate}"/>
-                                        <TextBlock Text="{Binding Order.OrderDeliveryDate}"/>
+                                    <StackPanel Grid.Column="1"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Bottom">
+                                        <TextBlock Text="{Binding OrderDate, StringFormat='Дата заказа: {0:dd-MM-yyyy}'}"/>
+                                        <WrapPanel>
+                                            <TextBlock 
+                                                VerticalAlignment="Center"
+                                                Text="Дата доставки: "/>
+                                            <DatePicker 
+                                             
+                                            SelectedDate="{Binding OrderDeliveryDate}"
+                                            DisplayDateStart="{Binding OrderDate}">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="SelectedDateChanged">
+                                                        <i:InvokeCommandAction 
+                                                            Command="{Binding DataContext.ChangeDate,  RelativeSource={RelativeSource AncestorType={x:Type local:OrderPage}}}"
+                                                            />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </DatePicker>
+                                        </WrapPanel>                                        
+                                        <TextBlock 
+                                            DataContext="{Binding OrderStatusNavigation}"
+                                            Text="{Binding OrderStatus1, StringFormat='Статус заказа: {0}'}"/>
                                     </StackPanel>
-                                    <TextBlock Grid.Column="2" Text="{Binding Order.FioClient}"/>
+                                    <StackPanel
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding FioClient}"/>
+                                        <Button
+                                            Content="Показать товары"
+                                            DataContext="{Binding DataContext,  RelativeSource={RelativeSource AncestorType={x:Type local:OrderPage}}}"
+                                            Command="{Binding ViewProducts}"
+                                            />
+                                    </StackPanel>
+                                    
                                 </Grid>
-                            </materialDesign:Card>                                                 
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
+                            </materialDesign:Card>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ListView FontFamily="{StaticResource pwsFont}"                      
+                      Grid.Column="2"
+                      ItemsSource="{Binding Products, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      HorizontalContentAlignment="Stretch"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card Background="{Binding ProductDiscountAmount, Converter={StaticResource BrushConvert}}"
+                                             Padding="8"
+                                             HorizontalAlignment="Stretch">
+                            <Grid HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding ProductPhoto}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Width="125"
+                                       Height="125"/>
+                                <Grid Grid.Column="1"
+                                      VerticalAlignment="Center">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0"
+                                               FontWeight="Bold"
+                                               Text="{Binding ProductName}"/>
+                                    <TextBlock Grid.Row="1"
+                                               Text="{Binding ProductDescription}"/>
+                                    <TextBlock Grid.Row="2"
+                                               DataContext="{Binding ProductManufacturerNavigation}"
+                                               Text="{Binding Manufacturer1, StringFormat='Производитель: {0}'}"/>
+                                    <TextBlock Grid.Row="3">
+                                        <TextBlock.Inlines>
+                                            <Run Text="Цена: "/>
+                                            <Run Text="{Binding ProductCost, StringFormat='{}{0:C}', ConverterCulture=ru-RU}"
+                                             TextDecorations="{Binding ProductDiscountAmount,Converter={StaticResource PriceConvert}}"/>
+                                            <Run Text="{Binding ProductArticleNumber, Converter={StaticResource PriceConvert}, StringFormat='{}{0:C}', ConverterCulture=ru-RU}"/>
+                                        </TextBlock.Inlines>
+                                    </TextBlock>
+                                </Grid>
+                                <TextBlock Grid.Column="2"
+                                           Text="{Binding ProductDiscountAmount, StringFormat='Скидка: {0}%'}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center">
+                                </TextBlock>
+                            </Grid>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Background="Transparent"
+                BorderBrush="{StaticResource pwsSecondaryBg}"
+                Style="{StaticResource MaterialDesignFloatingActionSecondaryButton}"
+                Margin="0, 5, 5, 0" Cursor="Hand"
+                Width="30"
+                Height="30"
+                Command="{Binding MinProducts}"
+                ToolTip="Свернуть список товаров"
+                Visibility="{Binding VisibleButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                <Image Source="\Resources\compress.png" Margin="5,5,5,5" Cursor=""/>
+            </Button>
         </Grid>
+        <Button Grid.Row="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Background="{StaticResource pwsSecondaryBg}"
+                BorderBrush="{StaticResource pwsSecondaryBg}"
+                Style="{StaticResource MaterialDesignFloatingActionSecondaryButton}"
+                Margin="10, 0, 0, 10"
+                Command="{Binding SignInProducts}">
+            <Image Source="\Resources\products.png"
+                   Margin="7"/>
+
+        </Button>
     </Grid>
 </Page>

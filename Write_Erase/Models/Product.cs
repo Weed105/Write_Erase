@@ -29,6 +29,7 @@ public partial class Product
 
     
     public int ProductSupplier { get; set; }
+    public int ProductStatus { get; set; }
 
 
     public virtual ICollection<Orderproduct> Orderproducts { get; } = new List<Orderproduct>();

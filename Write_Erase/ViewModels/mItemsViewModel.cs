@@ -21,12 +21,13 @@ namespace Write_Erase.ViewModels
     {
         private readonly PageService _pageService;
         private readonly ProductService _productService;
+        private readonly OrderProductService _orderProductService;
 
         public Product SelectedProduct { get; set; }
         public Visibility VisibleButton { get; set; } = Visibility.Hidden;
-        public Visibility VisibleMenu{ get; set; } = Global.CurrentUser.UserRole == 1 ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility VisibleMenu{ get; set; } = Global.CurrentUser != null && Global.CurrentUser.UserRole == 1 ? Visibility.Visible : Visibility.Collapsed;
 
-        public Visibility VisibleOrder { get; set; } = Global.CurrentUser.UserRole == 1 || Global.CurrentUser.UserRole == 3 ? Visibility.Visible : Visibility.Hidden;
+        public Visibility VisibleOrder { get; set; } = Global.CurrentUser != null && (Global.CurrentUser.UserRole == 1 || Global.CurrentUser.UserRole == 3) ? Visibility.Visible : Visibility.Hidden;
 
         public string FullName { get; set; } = Global.CurrentUser == null || Global.CurrentUser.UserName == string.Empty ? "Гость" : $"{Global.CurrentUser.UserSurname} {Global.CurrentUser.UserName} {Global.CurrentUser.UserPatronymic}";
 
@@ -91,12 +92,18 @@ namespace Write_Erase.ViewModels
             }
             CountItems = updateProducts.Count;
             Products = updateProducts;
+
+            GlobalOrderProducts.Products = Products;
+
+            var orders = await _orderProductService.GetOrders();
+            GlobalOrderProducts.Orderproduct = orders;
         }
 
-        public mItemsViewModel(PageService pageService, ProductService productService)
+        public mItemsViewModel(PageService pageService, ProductService productService, OrderProductService orderProductService)
         {
             _pageService = pageService;
             _productService = productService;
+            _orderProductService = orderProductService;
             Update();
         }
         public DelegateCommand SignOutCommand => new(() =>
@@ -139,8 +146,11 @@ namespace Write_Erase.ViewModels
             _pageService.ChangePage(new ChangePage());
         });
 
-
-
+        public DelegateCommand DeleteProduct => new(() =>
+        {
+            _productService.DeleteProduct(SelectedProduct);
+            Update();
+        });
         public DelegateCommand SignInBasket=> new(() => _pageService.ChangePage(new BasketPage()));
         public DelegateCommand SignInOrders => new(() => _pageService.ChangePage(new OrderPage()));
     }

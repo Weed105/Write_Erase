@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Write_Erase.Models;
 
 namespace Write_Erase.Services
@@ -25,30 +26,33 @@ namespace Write_Erase.Services
             try
             {
                 var product = await _context.Products.ToListAsync();
+                await _context.Measurements.ToListAsync();
                 await _context.Manufacturers.ToListAsync();
+                await _context.Orderproducts.ToListAsync();
                 await Task.Run(() =>
                 {
                     foreach (var item in product)
                     {
-                        products.Add(new Product
-                        {
-                            ProductPhoto = item.ProductPhoto == string.Empty ? "../../../Resources/picture.png" : System.IO.Path.GetFullPath("../../../Resources/" + item.ProductPhoto),
-                            ProductName = item.ProductName,
-                            ProductDescription= item.ProductDescription,
-                            ProductManufacturer= item.ProductManufacturer,
-                            ProducMaxDiscount = item.ProducMaxDiscount,
-                            ProductCategory= item.ProductCategory,
-                            ProductMeasurement= item.ProductMeasurement,
-                            ProductSupplier = item.ProductSupplier,
-                            ProductManufacturerNavigation = item.ProductManufacturerNavigation,
-                            ProductCategoryNavigation = item.ProductCategoryNavigation,
-                            ProductMeasurementNavigation= item.ProductMeasurementNavigation,
-                            ProductSupplierNavigation= item.ProductSupplierNavigation,
-                            ProductCost = item.ProductCost,
-                            ProductDiscountAmount= item.ProductDiscountAmount.Value,
-                            ProductArticleNumber= item.ProductArticleNumber,
-                            ProductQuantityInStock= item.ProductQuantityInStock,
-                        });
+                        if (item.ProductStatus == 0)
+                            products.Add(new Product
+                            {
+                                ProductPhoto = item.ProductPhoto == string.Empty ? "../../../Resources/picture.png" : System.IO.Path.GetFullPath("../../../Resources/" + item.ProductPhoto),
+                                ProductName = item.ProductName,
+                                ProductDescription= item.ProductDescription,
+                                ProductManufacturer= item.ProductManufacturer,
+                                ProducMaxDiscount = item.ProducMaxDiscount,
+                                ProductCategory= item.ProductCategory,
+                                ProductMeasurement= item.ProductMeasurement,
+                                ProductSupplier = item.ProductSupplier,
+                                ProductManufacturerNavigation = item.ProductManufacturerNavigation,
+                                ProductCategoryNavigation = item.ProductCategoryNavigation,
+                                ProductMeasurementNavigation= item.ProductMeasurementNavigation,
+                                ProductSupplierNavigation= item.ProductSupplierNavigation,
+                                ProductCost = item.ProductCost,
+                                ProductDiscountAmount= item.ProductDiscountAmount.Value,
+                                ProductArticleNumber= item.ProductArticleNumber,
+                                ProductQuantityInStock= item.ProductQuantityInStock,
+                            });
                     }
                 });
             }
@@ -167,6 +171,12 @@ namespace Write_Erase.Services
             product1.ProductCost = product.ProductCost;
             product1.ProductQuantityInStock = product.ProductQuantityInStock;
             product1.ProductDiscountAmount = product.ProductDiscountAmount;
+            _context.SaveChanges();
+        }
+
+        public async void DeleteProduct(Product product)
+        {
+            _context.Products.Where(i => i.ProductArticleNumber == product.ProductArticleNumber).SingleOrDefault().ProductStatus = 1;
             _context.SaveChanges();
         }
     }
