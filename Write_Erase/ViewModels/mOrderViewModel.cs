@@ -26,6 +26,7 @@ namespace Write_Erase.ViewModels
         public string FullName { get; set; } = Global.CurrentUser == null || Global.CurrentUser.UserName == string.Empty ? "Гость" : $"{Global.CurrentUser.UserSurname} {Global.CurrentUser.UserName} {Global.CurrentUser.UserPatronymic}";
 
         public OrderUser SelectedOrder { get; set; }
+
         public List<string> Sorts { get; set; } = new List<string>() { "По возрастанию", "По убыванию" };
         public List<string> Statuses { get; set; } = new List<string>() { "Завершен", "Новый" };
         public List<string> Filters { get; set; } = new List<string> { "Все диапазоны", "0-10%", "11-14%", "15% и более" };
@@ -89,6 +90,7 @@ namespace Write_Erase.ViewModels
         {
             if (SelectedOrder != null)
             {
+
                 VisibleButton = Visibility.Visible;
                 ListWidth = "";
                 SelectProducts();
@@ -97,17 +99,19 @@ namespace Write_Erase.ViewModels
 
         public async void SelectProducts()
         {
-            if (SelectedOrder != null)
-            {
                 var updateProducts = await _productService.GetProducts();
-                List<Orderproduct> orderProducts = (List<Orderproduct>)Orders.Where(i => i.Equals(SelectedOrder)).SingleOrDefault().Orderproducts;
-                List<Product> products = new List<Product>();
-                foreach (Orderproduct orderproduct in orderProducts)
+
+                if (SelectedOrder != null)
                 {
-                    products.Add(updateProducts.Where(i => i.ProductArticleNumber == orderproduct.ProductArticleNumber).SingleOrDefault());
+
+                    List<Orderproduct> orderProducts = (List<Orderproduct>)Orders.Where(i => i.Equals(SelectedOrder)).SingleOrDefault().Orderproducts;
+                    List<Product> products = new List<Product>();
+                    foreach (Orderproduct orderproduct in orderProducts)
+                    {
+                        products.Add(updateProducts.Where(i => i.ProductArticleNumber == orderproduct.ProductArticleNumber).SingleOrDefault());
+                    }
+                    Products = products;
                 }
-                Products = products;
-            }
         }
 
         public DelegateCommand MinProducts => new(() =>

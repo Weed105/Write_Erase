@@ -153,5 +153,8 @@ namespace Write_Erase.ViewModels
         });
         public DelegateCommand SignInBasket=> new(() => _pageService.ChangePage(new BasketPage()));
         public DelegateCommand SignInOrders => new(() => _pageService.ChangePage(new OrderPage()));
+
+        public DelegateCommand ViewManufacturers => new(() => _pageService.ChangePage(new ManufacturersPage()));
+        public DelegateCommand ViewSuppliers => new(() => _pageService.ChangePage(new SuppliersPage()));
     }
 }

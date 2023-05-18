@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -151,7 +152,17 @@ namespace Write_Erase.Services
             catch { }
             return suppliers;
         }
-        
+        public async void AddManufacterer(string manufacturer)
+        {
+            var manufacturers = await GetManufacturers();
+            int count_orders = manufacturers.Max(i => i.Idmanufacturers) + 1;
+            _context.Manufacturers.Add(new Manufacturer
+            {
+                Idmanufacturers = count_orders,
+                Manufacturer1 = manufacturer,
+            });
+            _context.SaveChanges();
+        }
         public async void AddProduct(Product product)
         {
             _context.Products.Add(product);
