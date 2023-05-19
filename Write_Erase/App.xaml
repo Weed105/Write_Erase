@@ -20,6 +20,7 @@
             <converter:OrderPriceConverter x:Key="OrderPriceConvert"/>
             <converter:OrderDiscountConverter x:Key="OrderDiscountConvert"/>
             <converter:OrderBrushConverter x:Key="OrderBrushConvert"/>
+            <converter:CountConverter x:Key="CountConvert"/>
 
             <local:ViewModelLocator x:Key="ViewModelLocator"/>
 

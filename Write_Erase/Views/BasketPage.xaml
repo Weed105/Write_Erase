@@ -126,7 +126,7 @@
                                         />
                                     <TextBlock HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           Text="{Binding Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                           Text="{Binding Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat='Количество - {0}'}"/>
                                     <Button Width="30"
                                         Height="30"
                                         Padding="0"
@@ -176,13 +176,6 @@
                        />
                         <TextBlock 
                            Text="{Binding DiscountPrice, StringFormat='Сумма со скидкой: {0}', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           FontSize="15"
-                       Margin="0,10,0,10"
-                       FontFamily="{StaticResource pwsFont}"
-                       />
-                        <TextBlock
-                           Text="{Binding Count, StringFormat='Количество: {0}', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               
                            FontSize="15"
                        Margin="0,10,0,10"
                        FontFamily="{StaticResource pwsFont}"

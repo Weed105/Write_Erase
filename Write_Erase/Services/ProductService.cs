@@ -35,25 +35,31 @@ namespace Write_Erase.Services
                     foreach (var item in product)
                     {
                         if (item.ProductStatus == 0)
-                            products.Add(new Product
-                            {
-                                ProductPhoto = item.ProductPhoto == string.Empty ? "../../../Resources/picture.png" : System.IO.Path.GetFullPath("../../../Resources/" + item.ProductPhoto),
-                                ProductName = item.ProductName,
-                                ProductDescription= item.ProductDescription,
-                                ProductManufacturer= item.ProductManufacturer,
-                                ProducMaxDiscount = item.ProducMaxDiscount,
-                                ProductCategory= item.ProductCategory,
-                                ProductMeasurement= item.ProductMeasurement,
-                                ProductSupplier = item.ProductSupplier,
-                                ProductManufacturerNavigation = item.ProductManufacturerNavigation,
-                                ProductCategoryNavigation = item.ProductCategoryNavigation,
-                                ProductMeasurementNavigation= item.ProductMeasurementNavigation,
-                                ProductSupplierNavigation= item.ProductSupplierNavigation,
-                                ProductCost = item.ProductCost,
-                                ProductDiscountAmount= item.ProductDiscountAmount.Value,
-                                ProductArticleNumber= item.ProductArticleNumber,
-                                ProductQuantityInStock= item.ProductQuantityInStock,
-                            });
+                        {
+                            item.ProductPhoto = item.ProductPhoto == string.Empty ? "../../../Resources/picture.png" : System.IO.Path.GetFullPath("../../../Resources/" + item.ProductPhoto);
+                            products.Add(item);
+                        }
+                            
+                            //products.Add(new Product
+                            //{
+                            //    ProductPhoto = item.ProductPhoto == string.Empty ? "../../../Resources/picture.png" : System.IO.Path.GetFullPath("../../../Resources/" + item.ProductPhoto),
+                            //    ProductName = item.ProductName,
+                            //    ProductDescription= item.ProductDescription,
+                            //    ProductManufacturer= item.ProductManufacturer,
+                            //    ProducMaxDiscount = item.ProducMaxDiscount,
+                            //    ProductCategory= item.ProductCategory,
+                            //    ProductMeasurement= item.ProductMeasurement,
+                            //    ProductSupplier = item.ProductSupplier,
+                            //    ProductManufacturerNavigation = item.ProductManufacturerNavigation,
+                            //    ProductCategoryNavigation = item.ProductCategoryNavigation,
+                            //    ProductMeasurementNavigation= item.ProductMeasurementNavigation,
+                            //    ProductSupplierNavigation= item.ProductSupplierNavigation,
+                            //    ProductCost = item.ProductCost,
+                            //    ProductDiscountAmount= item.ProductDiscountAmount.Value,
+                            //    ProductArticleNumber= item.ProductArticleNumber,
+                            //    ProductQuantityInStock= item.ProductQuantityInStock,
+                                
+                            //});
                     }
                 });
             }
@@ -154,15 +160,63 @@ namespace Write_Erase.Services
         }
         public async void AddManufacterer(string manufacturer)
         {
-            var manufacturers = await GetManufacturers();
-            int count_orders = manufacturers.Max(i => i.Idmanufacturers) + 1;
-            _context.Manufacturers.Add(new Manufacturer
+            int count_orders = _context.Manufacturers.Max(i => i.Idmanufacturers) + 1;
+            if (_context.Manufacturers.Where(i => i.Manufacturer1 == manufacturer).Count() == 0)
             {
-                Idmanufacturers = count_orders,
-                Manufacturer1 = manufacturer,
-            });
-            _context.SaveChanges();
+
+                _context.Manufacturers.Add(new Manufacturer
+                {
+                    Idmanufacturers = count_orders,
+                    Manufacturer1 = manufacturer,
+                });
+                _context.SaveChanges();
+            }
+            else
+            {
+                MessageBox.Show("Такой производитель уже есть!", "Внимание");
+            }
         }
+
+        public async void AddSupplier(string supplier)
+        {
+            int count_orders = _context.Suppliers.Max(i => i.Idsuppliers) + 1;
+            if (_context.Suppliers.Where(i => i.Supplier1 == supplier).Count() == 0)
+            {
+
+                _context.Suppliers.Add(new Supplier
+                {
+                    Idsuppliers = count_orders,
+                    Supplier1 = supplier,
+                });
+                _context.SaveChanges();
+            }
+            else
+            {
+                MessageBox.Show("Такой поставщик уже есть!", "Внимание");
+            }
+        }
+
+        public async void ChangeSupplier(Supplier supplier, string name_supplier)
+        {
+
+            if (_context.Suppliers.Where(i => i.Supplier1 == name_supplier).Count() == 0)
+                _context.Suppliers.Where(i => i == supplier).SingleOrDefault().Supplier1 = name_supplier;
+            else
+                MessageBox.Show("Такой поставщик уже есть!", "Внимание");
+            _context.SaveChanges();
+
+        }
+
+        public async void ChangeManufacterer(Manufacturer manufacturer, string name_manufacturer)
+        {
+            if (_context.Manufacturers.Where(i => i.Manufacturer1 == name_manufacturer).Count() == 0)
+                _context.Manufacturers.Where(i => i == manufacturer).SingleOrDefault().Manufacturer1 = name_manufacturer;
+            else
+                MessageBox.Show("Такой производитель уже есть!", "Внимание");
+            _context.SaveChanges();
+
+        }
+
         public async void AddProduct(Product product)
         {
             _context.Products.Add(product);

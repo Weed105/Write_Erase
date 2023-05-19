@@ -81,6 +81,8 @@ namespace Write_Erase.ViewModels
                 else
                     randomArticle += (char)random.Next(48, 57);
             }
+
+
             if (!Name.Equals("") && !Description.Equals("") && SelectedSupplier != null && SelectedMeasurement != null && SelectedCategory != null && SelectedManufacturer != null && Products.Where(i => i.ProductArticleNumber.Equals(randomArticle)).Count() == 0)
             {
                 Product product = new Product
@@ -99,9 +101,17 @@ namespace Write_Erase.ViewModels
                     ProductSupplier = SupplierDb.Where(i => i.Supplier1.Equals(SelectedSupplier)).SingleOrDefault().Idsuppliers,
                 };
                 if (ChangeableProduct.AddOrChange)
+                {
                     _productService.AddProduct(product);
+                    MessageBox.Show("Продукт добавлен", "Сообщение");
+                }
                 else
+                {
                     _productService.ChangeProduct(product);
+                    MessageBox.Show("Продукт изменен", "Сообщение");
+                }
+                _pageService.ChangePage(new ViewItems());
+
             }
         });
 

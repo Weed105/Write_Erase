@@ -93,6 +93,11 @@ namespace Write_Erase.ViewModels
             CountItems = updateProducts.Count;
             Products = updateProducts;
 
+            if (ProductsInBasket.Products.Count != 0)
+                VisibleButton = Visibility.Visible;
+            else
+                VisibleButton = Visibility.Hidden;
+
             GlobalOrderProducts.Products = Products;
 
             var orders = await _orderProductService.GetOrders();
@@ -120,7 +125,10 @@ namespace Write_Erase.ViewModels
                 ProductCard product = ProductsInBasket.Products.Where(i => i.Product.ProductArticleNumber == SelectedProduct.ProductArticleNumber).FirstOrDefault();
                 if (product != null)
                 {
-                    product.Count += 1;
+                    if (product.Count != product.Product.ProductQuantityInStock)
+                        product.Count += 1;
+                    else
+                        MessageBox.Show("В заказе уже этого полно", "Хватит");
                 }
                 else
                 {

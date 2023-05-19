@@ -21,10 +21,11 @@
             HorizontalAlignment="Center"
             FontSize="26"
             Margin="10"
-            >Поставщики</TextBlock>
+            >Производители</TextBlock>
         <ListView Grid.Row="1"
                   Width="400"
                   ItemsSource="{Binding Manufacturers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedManufacturer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   BorderBrush="{StaticResource pwsAccentedBg}"
                   BorderThickness="2"
                   FontFamily="{StaticResource pwsFont}"
@@ -37,11 +38,9 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-
                     <Border BorderBrush="{StaticResource pwsAccentedBg}"
                             BorderThickness="3"
-                            CornerRadius="5"
-                                >
+                            CornerRadius="5">
                         <materialDesign:Card Padding="8" HorizontalAlignment="Stretch" 
                                 BorderThickness="1">
                             <TextBlock Text="{Binding Manufacturer1}"/>
@@ -50,8 +49,6 @@
 
                 </DataTemplate>
             </ListView.ItemTemplate>
-
-
         </ListView>
         <StackPanel Grid.Row="2">
             <TextBox
@@ -59,13 +56,13 @@
                 Width="250"
                 Margin="0"
                 Style="{StaticResource pwsTextBox}"
-                materialDesign:HintAssist.Hint="Название поставщика"
+                materialDesign:HintAssist.Hint="Название производителя"
                 />
             <WrapPanel HorizontalAlignment="Center">
                 <Button Style="{StaticResource pwsButton}" Command="{Binding AddManufacturer}" Margin="10" Cursor="Hand">Добавить</Button>
-                <Button Style="{StaticResource pwsButton}" Margin="10">Изменить</Button>
+                <Button Style="{StaticResource pwsButton}" Command="{Binding ChangeManufacturer}" Margin="10">Изменить</Button>
             </WrapPanel>
-            <Button Style="{StaticResource pwsButton}" Margin="0 0 0 10" Width="100">Назад</Button>
+            <Button Style="{StaticResource pwsButton}" Command="{Binding SignInProducts}" Margin="0 0 0 10" Width="100">Назад</Button>
         </StackPanel>
     </Grid>
 </Page>

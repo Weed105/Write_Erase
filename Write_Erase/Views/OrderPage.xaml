@@ -213,6 +213,7 @@
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0"
                                                FontWeight="Bold"
@@ -230,6 +231,8 @@
                                             <Run Text="{Binding ProductArticleNumber, Converter={StaticResource PriceConvert}, StringFormat='{}{0:C}', ConverterCulture=ru-RU}"/>
                                         </TextBlock.Inlines>
                                     </TextBlock>
+                                    <TextBlock Grid.Row="4"
+                                               Text="{Binding Path=ProductArticleNumber, Converter={StaticResource CountConvert}}"/>
                                 </Grid>
                                 <TextBlock Grid.Column="2"
                                            Text="{Binding ProductDiscountAmount, StringFormat='Скидка: {0}%'}"

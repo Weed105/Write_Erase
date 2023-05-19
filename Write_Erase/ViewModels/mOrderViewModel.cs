@@ -29,7 +29,7 @@ namespace Write_Erase.ViewModels
 
         public List<string> Sorts { get; set; } = new List<string>() { "По возрастанию", "По убыванию" };
         public List<string> Statuses { get; set; } = new List<string>() { "Завершен", "Новый" };
-        public List<string> Filters { get; set; } = new List<string> { "Все диапазоны", "0-10%", "11-14%", "15% и более" };
+        public List<string> Filters { get; set; } = new List<string> { "Все диапазоны", "Завершен", "Новый"};
         public string Sorting
         {
             get { return GetValue<string>(); }
@@ -70,15 +70,12 @@ namespace Write_Erase.ViewModels
             {
                 switch (Filter)
                 {
-                    case "0-10%":
-                        orderProducts = orderProducts.Where(p => (p.Orderproducts.Sum(i => i.ProductArticleNumberNavigation.ProductCost * decimal.Parse(i.Count)) - p.Orderproducts.Sum(i => (i.ProductArticleNumberNavigation.ProductCost - (i.ProductArticleNumberNavigation.ProductCost * i.ProductArticleNumberNavigation.ProductDiscountAmount / 100)) * decimal.Parse(i.Count))) / p.Orderproducts.Sum(i => i.ProductArticleNumberNavigation.ProductCost * decimal.Parse(i.Count)) * 100 >= 0 && (p.Orderproducts.Sum(i => i.ProductArticleNumberNavigation.ProductCost * decimal.Parse(i.Count)) - p.Orderproducts.Sum(i => (i.ProductArticleNumberNavigation.ProductCost - (i.ProductArticleNumberNavigation.ProductCost * i.ProductArticleNumberNavigation.ProductDiscountAmount / 100)) * decimal.Parse(i.Count))) / p.Orderproducts.Sum(i => i.ProductArticleNumberNavigation.ProductCost * decimal.Parse(i.Count)) * 100 < 11).ToList();
+                    case "Завершен":
+                        orderProducts = orderProducts.Where(p => p.OrderStatusNavigation.OrderStatus1 == "Завершен").ToList();
                         break;
-                    case "11-14%":
-                        orderProducts = orderProducts.Where(p => (p.Orderproducts.Sum(i => i.ProductArticleNumberNavigation.ProductCost * decimal.Parse(i.Count)) - p.Orderproducts.Sum(i => (i.ProductArticleNumberNavigation.ProductCost - (i.ProductArticleNumberNavigation.ProductCost * i.ProductArticleNumberNavigation.ProductDiscountAmount / 100)) * decimal.Parse(i.Count))) / p.Orderproducts.Sum(i => i.ProductArticleNumberNavigation.ProductCost * decimal.Parse(i.Count)) * 100 >= 11 && (p.Orderproducts.Sum(i => i.ProductArticleNumberNavigation.ProductCost * decimal.Parse(i.Count)) - p.Orderproducts.Sum(i => (i.ProductArticleNumberNavigation.ProductCost - (i.ProductArticleNumberNavigation.ProductCost * i.ProductArticleNumberNavigation.ProductDiscountAmount / 100)) * decimal.Parse(i.Count))) / p.Orderproducts.Sum(i => i.ProductArticleNumberNavigation.ProductCost * decimal.Parse(i.Count)) * 100 < 15).ToList();
-                        break;
-                    case "15% и более":
-                        orderProducts = orderProducts.Where(p => (p.Orderproducts.Sum(i => i.ProductArticleNumberNavigation.ProductCost * decimal.Parse(i.Count)) - p.Orderproducts.Sum(i => (i.ProductArticleNumberNavigation.ProductCost - (i.ProductArticleNumberNavigation.ProductCost * i.ProductArticleNumberNavigation.ProductDiscountAmount / 100)) * decimal.Parse(i.Count))) / p.Orderproducts.Sum(i => i.ProductArticleNumberNavigation.ProductCost * decimal.Parse(i.Count)) * 100 >= 15).ToList();
-                        break;
+                    case "Новый":
+                        orderProducts = orderProducts.Where(p => p.OrderStatusNavigation.OrderStatus1 == "Новый ").ToList();
+                        break; 
                 }
             }
             Orders = orderProducts;
@@ -128,9 +125,7 @@ namespace Write_Erase.ViewModels
 
         public DelegateCommand ChangeStatus => new(() =>
         {
-            if (SelectedOrder.OrderStatus == 1)
-                SelectedOrder.OrderStatus = 2;
-            else
+            if (SelectedOrder.OrderStatus == 2)
                 SelectedOrder.OrderStatus = 1;
             _orderProductService.ChangeState(SelectedOrder);
             Load();

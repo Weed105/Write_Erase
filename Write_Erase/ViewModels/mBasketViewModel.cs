@@ -16,6 +16,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
 
 namespace Write_Erase.ViewModels
 {
@@ -102,12 +103,19 @@ namespace Write_Erase.ViewModels
                 }
                 _orderProductService.AddOrder(id_pickup, ProductsInBasket.Products);
                 CreateCoupon();
-
+                ProductsInBasket.Products = new ObservableCollection<ProductCard>();
+                _pageService.ChangePage(new ViewItems());
             }
         });
 
         public void CreateCoupon()
         {
+            Random random = new Random();
+            string randomNumber = "";
+            for (int i = 0; i < 6; i++)
+            {
+                randomNumber += (char)random.Next(48, 57);
+            }
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Encoding.GetEncoding("windows-1252");
             Document doc = new Document();
@@ -123,21 +131,24 @@ namespace Write_Erase.ViewModels
             paragraph.Alignment = Element.ALIGN_CENTER;
             doc.Add(paragraph);
 
+            Paragraph numberCheck = new Paragraph($"Номер чека: {randomNumber}", font);
+            doc.Add(numberCheck);
+
             Paragraph numberOrder = new Paragraph($"Номер заказа: {OrderUsers.Count}", font);
             doc.Add(numberOrder);
 
             Paragraph dateOrder = new Paragraph($"Дата заказа: {DateTime.Now.ToString("D")}", font);
             doc.Add(dateOrder);
 
-            Paragraph structureOrder = new Paragraph($"Состав заказа:", font);
+            Paragraph structureOrder = new Paragraph($"\nСостав заказа:", font);
             doc.Add(structureOrder);
 
             foreach(ProductCard product in ProductsInBasket.Products)
             {
-                Paragraph itemOrder = new Paragraph($"- {product.Product.ProductName} {product.Count} {product.Product.ProductMeasurementNavigation.Measurement1};", font);
+                Paragraph itemOrder = new Paragraph($"- {product.Product.ProductName} {product.Count} {product.Product.ProductMeasurementNavigation.Measurement1} по цене: {Math.Round(product.Product.ProductCost, 2)}₽ за товар;", font);
                 doc.Add(itemOrder);
             }
-            Paragraph sumOrder = new Paragraph($"Цена заказа без скидки: {NotDiscountPrice}₽", font);
+            Paragraph sumOrder = new Paragraph($"\nЦена заказа без скидки: {NotDiscountPrice}₽", font);
             doc.Add(sumOrder);
 
             Paragraph discOrder = new Paragraph($"Скидка: {Discount}%", font);
@@ -146,10 +157,9 @@ namespace Write_Erase.ViewModels
             Paragraph priceOrder = new Paragraph($"Цена заказа с учетом скидки: {DiscountPrice}₽", font);
             doc.Add(priceOrder);
 
-            Paragraph punctOrder = new Paragraph($"Пункт выдачи заказа: {SelectedPoint}", font);
+            Paragraph punctOrder = new Paragraph($"\nПункт выдачи заказа: {SelectedPoint}", font);
             doc.Add(punctOrder);
 
-            Random random = new Random();
             Paragraph codeOrder = new Paragraph($"Код получения заказа: {(char)random.Next(48, 57)}{(char)random.Next(48, 57)}{(char)random.Next(48, 57)}", fontBold);
             doc.Add(codeOrder);
 
@@ -167,12 +177,12 @@ namespace Write_Erase.ViewModels
 
             if (date)
             {
-                Paragraph date2Order = new Paragraph($"Дата доставки заказа: {DateTime.Now.AddDays(3)}", font);
+                Paragraph date2Order = new Paragraph($"Дата доставки заказа: {DateTime.Now.AddDays(3).ToString("D")}", font);
                 doc.Add(date2Order);
             }
             else
             {
-                Paragraph date2Order = new Paragraph($"Дата доставки заказа: {DateTime.Now.AddDays(6)}", font);
+                Paragraph date2Order = new Paragraph($"Дата доставки заказа: {DateTime.Now.AddDays(6).ToString("D")}", font);
                 doc.Add(date2Order);
             }
 
@@ -229,3 +239,13 @@ namespace Write_Erase.ViewModels
 
     }
 }
+
+
+//Количество в информации не нужно лучше количество на товаре  \/
+//Отделить в заказе продукты                                   \/
+//С чеком все плохо                                            \/
+//Количество на складе менять
+//Статус если завершен то новым не становиться                 \/
+//Фильтрация по статусу                                        \/
+//Количество товаров в заказе                                   
+//Корзина опусташается после заказа                            \/

@@ -108,7 +108,7 @@
                                   Visibility="{Binding VisibleMenu}"
                                   Command="{Binding DeleteProduct}"
                                   />
-                        <Separator></Separator>
+                        <Separator Visibility="{Binding VisibleMenu}"></Separator>
                         <MenuItem Header="Панель производителей"                                  
                                   Visibility="{Binding VisibleMenu}"
                                   Command="{Binding ViewManufacturers}"
@@ -118,7 +118,7 @@
                                   Command="{Binding ViewSuppliers}"
                                   
                                   />
-                        <Separator></Separator>
+                        <Separator Visibility="{Binding VisibleMenu}"></Separator>
                         <MenuItem Header="Добавить к заказу"
                                   Command="{Binding AddToBasket}"/>
                     </ContextMenu>
