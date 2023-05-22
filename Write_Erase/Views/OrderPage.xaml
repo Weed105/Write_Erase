@@ -81,7 +81,7 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="{Binding ListWidth}"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <ListView FontFamily="{StaticResource pwsFont}"
                       SelectedItem="{Binding SelectedOrder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -96,19 +96,7 @@
                                   Command="{Binding ChangeStatus}"
                                   />
                     </ContextMenu>
-                </ListView.ContextMenu>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="IsSelected" Value="True"/>
-                            </Trigger>
-                        </Style.Triggers>
-                        <Setter Property="BorderBrush" Value="Gray"/>
-                        <Setter Property="BorderThickness" Value="1"/>
-
-                    </Style>
-                </ListBox.ItemContainerStyle>
+                </ListView.ContextMenu> 
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical"/>
@@ -165,12 +153,7 @@
                                         Grid.Column="2"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding FioClient}"/>
-                                        <Button
-                                            Content="Показать товары"
-                                            DataContext="{Binding DataContext,  RelativeSource={RelativeSource AncestorType={x:Type local:OrderPage}}}"
-                                            Command="{Binding ViewProducts}"
-                                            />
+                                        <TextBlock Text="{Binding FioClient}"/> 
                                     </StackPanel>
                                     
                                 </Grid>
@@ -181,9 +164,10 @@
             </ListView>
             <ListView FontFamily="{StaticResource pwsFont}"                      
                       Grid.Column="2"
-                      ItemsSource="{Binding Products, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding SelectedOrder.Orderproducts, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                       HorizontalContentAlignment="Stretch"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      > 
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical"/>
@@ -191,7 +175,7 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <materialDesign:Card Background="{Binding ProductDiscountAmount, Converter={StaticResource BrushConvert}}"
+                        <materialDesign:Card Background="{Binding ProductArticleNumberNavigation.ProductDiscountAmount, Converter={StaticResource BrushConvert}}"
                                              Padding="8"
                                              HorizontalAlignment="Stretch">
                             <Grid HorizontalAlignment="Stretch"
@@ -201,7 +185,7 @@
                                     <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Image Source="{Binding ProductPhoto}"
+                                <Image Source="{Binding ProductArticleNumberNavigation.ProductPhoto}"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"
                                        Width="125"
@@ -217,25 +201,25 @@
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0"
                                                FontWeight="Bold"
-                                               Text="{Binding ProductName}"/>
+                                               Text="{Binding ProductArticleNumberNavigation.ProductName}"/>
                                     <TextBlock Grid.Row="1"
-                                               Text="{Binding ProductDescription}"/>
+                                               Text="{Binding ProductArticleNumberNavigation.ProductDescription}"/>
                                     <TextBlock Grid.Row="2"
-                                               DataContext="{Binding ProductManufacturerNavigation}"
+                                               DataContext="{Binding ProductArticleNumberNavigation.ProductManufacturerNavigation}"
                                                Text="{Binding Manufacturer1, StringFormat='Производитель: {0}'}"/>
                                     <TextBlock Grid.Row="3">
                                         <TextBlock.Inlines>
                                             <Run Text="Цена: "/>
-                                            <Run Text="{Binding ProductCost, StringFormat='{}{0:C}', ConverterCulture=ru-RU}"
-                                             TextDecorations="{Binding ProductDiscountAmount,Converter={StaticResource PriceConvert}}"/>
-                                            <Run Text="{Binding ProductArticleNumber, Converter={StaticResource PriceConvert}, StringFormat='{}{0:C}', ConverterCulture=ru-RU}"/>
+                                            <Run Text="{Binding ProductArticleNumberNavigation.ProductCost, StringFormat='{}{0:C}', ConverterCulture=ru-RU}"
+                                             TextDecorations="{Binding ProductArticleNumberNavigation.ProductDiscountAmount,Converter={StaticResource PriceConvert}}"/>
+                                            <Run Text="{Binding ProductArticleNumberNavigation.ProductArticleNumber, Converter={StaticResource PriceConvert}, StringFormat='{}{0:C}', ConverterCulture=ru-RU}"/>
                                         </TextBlock.Inlines>
                                     </TextBlock>
                                     <TextBlock Grid.Row="4"
-                                               Text="{Binding Path=ProductArticleNumber, Converter={StaticResource CountConvert}}"/>
+                                               Text="{Binding Count, StringFormat='Количество: {0}'}"/>
                                 </Grid>
                                 <TextBlock Grid.Column="2"
-                                           Text="{Binding ProductDiscountAmount, StringFormat='Скидка: {0}%'}"
+                                           Text="{Binding ProductArticleNumberNavigation.ProductDiscountAmount, StringFormat='Скидка: {0}%'}"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center">
                                 </TextBlock>
@@ -243,22 +227,7 @@
                         </materialDesign:Card>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>
-            <Button Grid.Column="1"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Background="Transparent"
-                BorderBrush="{StaticResource pwsSecondaryBg}"
-                Style="{StaticResource MaterialDesignFloatingActionSecondaryButton}"
-                Margin="0, 5, 5, 0" Cursor="Hand"
-                Width="30"
-                Height="30"
-                Command="{Binding MinProducts}"
-                ToolTip="Свернуть список товаров"
-                Visibility="{Binding VisibleButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-
-                <Image Source="\Resources\compress.png" Margin="5,5,5,5" Cursor=""/>
-            </Button>
+            </ListView> 
         </Grid>
         <Button Grid.Row="1"
                 HorizontalAlignment="Left"

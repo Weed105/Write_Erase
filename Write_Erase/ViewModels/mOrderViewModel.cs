@@ -11,6 +11,7 @@ using System.Windows.Media.Media3D;
 using Write_Erase.Models;
 using Write_Erase.Services;
 using Write_Erase.Views;
+using static iTextSharp.text.pdf.AcroFields;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Write_Erase.ViewModels
@@ -79,44 +80,18 @@ namespace Write_Erase.ViewModels
                 }
             }
             Orders = orderProducts;
+            foreach (var o in Orders)
+            {
+                foreach(var p in o.Orderproducts)
+                {
+                    if (!p.ProductArticleNumberNavigation.ProductPhoto.StartsWith("C"))
+                        p.ProductArticleNumberNavigation.ProductPhoto = p.ProductArticleNumberNavigation.ProductPhoto == string.Empty ? System.IO.Path.GetFullPath("../../../Resources/picture.png") : System.IO.Path.GetFullPath("../../../Resources/" + p.ProductArticleNumberNavigation.ProductPhoto);
+                }
+            }
             var orders = await _orderProductService.GetOrders();
             GlobalOrderProducts.Orderproduct = orders;
         }
-
-        public DelegateCommand ViewProducts => new(() =>
-        {
-            if (SelectedOrder != null)
-            {
-
-                VisibleButton = Visibility.Visible;
-                ListWidth = "";
-                SelectProducts();
-            }
-        });
-
-        public async void SelectProducts()
-        {
-                var updateProducts = await _productService.GetProducts();
-
-                if (SelectedOrder != null)
-                {
-
-                    List<Orderproduct> orderProducts = (List<Orderproduct>)Orders.Where(i => i.Equals(SelectedOrder)).SingleOrDefault().Orderproducts;
-                    List<Product> products = new List<Product>();
-                    foreach (Orderproduct orderproduct in orderProducts)
-                    {
-                        products.Add(updateProducts.Where(i => i.ProductArticleNumber == orderproduct.ProductArticleNumber).SingleOrDefault());
-                    }
-                    Products = products;
-                }
-        }
-
-        public DelegateCommand MinProducts => new(() =>
-        {
-            VisibleButton = Visibility.Collapsed;
-            ListWidth = "auto";
-            Products = new List<Product>();
-        });
+         
 
         public DelegateCommand ChangeDate => new(() =>
         {

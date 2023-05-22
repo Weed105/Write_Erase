@@ -34,32 +34,31 @@ namespace Write_Erase.Services
                 {
                     foreach (var item in product)
                     {
-                        if (item.ProductStatus == 0)
-                        {
-                            item.ProductPhoto = item.ProductPhoto == string.Empty ? "../../../Resources/picture.png" : System.IO.Path.GetFullPath("../../../Resources/" + item.ProductPhoto);
-                            products.Add(item);
-                        }
-                            
-                            //products.Add(new Product
-                            //{
-                            //    ProductPhoto = item.ProductPhoto == string.Empty ? "../../../Resources/picture.png" : System.IO.Path.GetFullPath("../../../Resources/" + item.ProductPhoto),
-                            //    ProductName = item.ProductName,
-                            //    ProductDescription= item.ProductDescription,
-                            //    ProductManufacturer= item.ProductManufacturer,
-                            //    ProducMaxDiscount = item.ProducMaxDiscount,
-                            //    ProductCategory= item.ProductCategory,
-                            //    ProductMeasurement= item.ProductMeasurement,
-                            //    ProductSupplier = item.ProductSupplier,
-                            //    ProductManufacturerNavigation = item.ProductManufacturerNavigation,
-                            //    ProductCategoryNavigation = item.ProductCategoryNavigation,
-                            //    ProductMeasurementNavigation= item.ProductMeasurementNavigation,
-                            //    ProductSupplierNavigation= item.ProductSupplierNavigation,
-                            //    ProductCost = item.ProductCost,
-                            //    ProductDiscountAmount= item.ProductDiscountAmount.Value,
-                            //    ProductArticleNumber= item.ProductArticleNumber,
-                            //    ProductQuantityInStock= item.ProductQuantityInStock,
-                                
-                            //});
+                        //if (item.ProductStatus == 0)
+                        //{
+                        //    item.ProductPhoto = item.ProductPhoto == string.Empty ? "../../../Resources/picture.png" : System.IO.Path.GetFullPath("../../../Resources/" + item.ProductPhoto);
+                        //    products.Add(item);
+                        //}
+                            products.Add(new Product
+                            {
+                                ProductPhoto = item.ProductPhoto == string.Empty ? "../../../Resources/picture.png" : System.IO.Path.GetFullPath("../../../Resources/" + item.ProductPhoto),
+                                ProductName = item.ProductName,
+                                ProductDescription = item.ProductDescription,
+                                ProductManufacturer = item.ProductManufacturer,
+                                ProducMaxDiscount = item.ProducMaxDiscount,
+                                ProductCategory = item.ProductCategory,
+                                ProductMeasurement = item.ProductMeasurement,
+                                ProductSupplier = item.ProductSupplier,
+                                ProductManufacturerNavigation = item.ProductManufacturerNavigation,
+                                ProductCategoryNavigation = item.ProductCategoryNavigation,
+                                ProductMeasurementNavigation = item.ProductMeasurementNavigation,
+                                ProductSupplierNavigation = item.ProductSupplierNavigation,
+                                ProductCost = item.ProductCost,
+                                ProductDiscountAmount = item.ProductDiscountAmount.Value,
+                                ProductArticleNumber = item.ProductArticleNumber,
+                                ProductQuantityInStock = item.ProductQuantityInStock,
+
+                            });
                     }
                 });
             }

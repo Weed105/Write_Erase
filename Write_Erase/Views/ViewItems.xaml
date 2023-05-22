@@ -140,6 +140,7 @@
                                     <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+
                                 <Image Source="{Binding ProductPhoto}"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"

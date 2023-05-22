@@ -74,6 +74,9 @@ namespace Write_Erase.Services
             });
             foreach (var item in values)
             {
+                Product product = _context.Products.FirstOrDefault(p => p == item.Product);
+                product.ProductQuantityInStock -= item.Count;
+
                 _context.Orderproducts.Add(new Orderproduct
                 {
                     OrderId = count_orders,

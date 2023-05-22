@@ -121,22 +121,27 @@ namespace Write_Erase.ViewModels
         {
             if (SelectedProduct != null)
             {
-                VisibleButton = Visibility.Visible;
-                ProductCard product = ProductsInBasket.Products.Where(i => i.Product.ProductArticleNumber == SelectedProduct.ProductArticleNumber).FirstOrDefault();
-                if (product != null)
+                if (SelectedProduct.ProductQuantityInStock != 0)
                 {
-                    if (product.Count != product.Product.ProductQuantityInStock)
-                        product.Count += 1;
+                    VisibleButton = Visibility.Visible;
+                    ProductCard product = ProductsInBasket.Products.Where(i => i.Product.ProductArticleNumber == SelectedProduct.ProductArticleNumber).FirstOrDefault();
+                    if (product != null)
+                    {
+                        if (product.Count != product.Product.ProductQuantityInStock)
+                            product.Count += 1;
+                        else
+                            MessageBox.Show("В заказе уже этого полно", "Хватит");
+                    }
                     else
-                        MessageBox.Show("В заказе уже этого полно", "Хватит");
+                    {
+                        ProductCard productCard = new ProductCard();
+                        productCard.Product = SelectedProduct;
+                        productCard.Count += 1;
+                        ProductsInBasket.Products.Add(productCard);
+                    }
                 }
                 else
-                {
-                    ProductCard productCard = new ProductCard();
-                    productCard.Product = SelectedProduct;
-                    productCard.Count += 1;
-                    ProductsInBasket.Products.Add(productCard);
-                }
+                    MessageBox.Show("На складе нет продукта", "Внимание");
             }
         });
 
