@@ -41,7 +41,7 @@ namespace Write_Erase.Services
                         //}
                             products.Add(new Product
                             {
-                                ProductPhoto = item.ProductPhoto == string.Empty ? "../../../Resources/picture.png" : System.IO.Path.GetFullPath("../../../Resources/" + item.ProductPhoto),
+                                ProductPhoto = !item.ProductPhoto.StartsWith("C") ? item.ProductPhoto == string.Empty ? "../../../Resources/picture.png" : System.IO.Path.GetFullPath("../../../Resources/" + item.ProductPhoto) : item.ProductPhoto,
                                 ProductName = item.ProductName,
                                 ProductDescription = item.ProductDescription,
                                 ProductManufacturer = item.ProductManufacturer,
