@@ -102,6 +102,8 @@ namespace Write_Erase.ViewModels
         {
             if (SelectedOrder.OrderStatus == 2)
                 SelectedOrder.OrderStatus = 1;
+            else
+                MessageBox.Show("Статус на новый поменять нельзя!", "Внимание");
             _orderProductService.ChangeState(SelectedOrder);
             Load();
         });

@@ -98,7 +98,6 @@
                          ItemsSource="{Binding Categories}"                      
                       SelectedItem="{Binding SelectedCategory}"
                          materialDesign:HintAssist.Hint="Категория"
-                         Text="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          />
         </Grid>
         <Grid Grid.Row="2">
